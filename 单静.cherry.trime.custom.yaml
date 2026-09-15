@@ -1,35 +1,23 @@
-# trime.custom.yaml —— 同文输入法(Trime / Android) 前端主题补丁
+# 单静.cherry.trime.custom.yaml —— 给「单静·樱桃主题（cherry 本身是深色方案）」补上小鹤双拼 17/18/24 键键盘 + 明暗配对
 # encoding: utf-8
 #
-# 作用：把四叶草·宇宙十七键(clover / 小鹤双拼 14·17 键)风格的键盘，移植成 Trime 的
-#       17 / 18 / 24 键中文键盘 + 一个英文 26 键键盘。
+# ⚠️ 本文件由 tools/gen-theme-patches.py 自动生成，请不要手改；
+#    要改键盘/配色配对，请改 trime.custom.yaml 或该脚本的表，然后重新生成。
 #
-# 放置位置（Trime 会按 librime 惯例把本文件的 patch 自动合并到内置 trime.yaml 上）：
-#   * Trime ≤ 3.3.11：<用户文件夹> = /storage/emulated/0/rime/       → 放这里
-#   * Trime ≥ 3.3.12：<用户文件夹> = /storage/emulated/0/Android/data/com.osfans.trime/files/rime/
-#                     （若在设置里选了「从外部存储同步」，则放在你授权的外部目录里，部署时会导入）
-#   * 本文件请与 oh-my-rime 的其它文件一起放到同一个用户文件夹根目录。
+# 为什么需要这个文件：
+#   Trime 的主题补丁规则是「主题资源 ID + .custom.yaml」，而 trime.custom.yaml 只作用于内置主题 trime。
+#   一旦在设置里把主题切换为 单静，就必须用本文件，否则 17/18/24 键键盘与中英切换键都会消失
+#   （主题会按自己的预设键盘，如 qwerty / qwerty_ / qwertys 显示）。
 #
-# 布局与方案的绑定（Trime 源码 KeyboardWindow.smartMatchKeyboard）：
-#   ① 键盘 ID == 方案 schema_id  → 切到该方案时自动使用该键盘（最高优先级）
-#   ② 否则按 speller/alphabet 匹配（26 个字母 → 内置 qwerty 26 键）
-#   所以这里把 17 键布局直接命名为 double_pinyin_flypy（小鹤双拼的方案 ID），
-#   这样「小鹤双拼-薄荷定制」默认就是 17 键；薄荷全拼(rime_mint)会自动用内置 26 键。
-#   想换默认布局：把下面的 "preset_keyboards/double_pinyin_flypy" 换成
-#   import_preset: flypy_18 / flypy_24，或直接把 18/24 键的 keys 复制过去。
+# 使用：把主题文件与下面的文件都放到 Trime 用户目录**根部**，然后【部署】并在 设置 → 主题 里选择它：
+#   - 单静.cherry.trime.yaml
+#   - 单静.trime.yaml
+#   - danjing.yaml
+#   - 单静.patch.无障碍.yaml
+#   - backgrounds/（同单静）
 #
-# 共键原理（重要）：
-#   17/18/24 键键盘一个键只发一个字母（四叶草做法），被合并掉的两个字母靠
-#   double_pinyin_flypy.custom.yaml 里的 derive 规则「改写」到代表字母上：
-#       q←w   e←r   t←y   o←p   a←s   d←f   j←k   z←x   b←n
-#   17 键用全部 9 组；18 键用前 8 组（b/n 不合并）；24 键只用 o←p、j←k。
-#   derive 只新增拼写、保留原拼写，所以 26 键全键盘依然能正常输入，不会出现「死键」。
-#
-# 使用窍门（共键键 = 模糊，未合并的字母键 = 精确）：
-#   · 18 键：B 键同时给 b-/n- 候选；要精确的 n 声母或 iao 韵母就用 N 键。
-#   · 24 键：OP 键(发 o) 同时给 uo/o 与 ie，JK 键(发 j) 同时给 an 与 ing/uai；
-#            W(ei)/R(uan)/Y(un)/S(ong)/F(en)/X(ia)/N(iao) 都只有一种读音，按 26 键习惯打即可。
-
+# 明暗：本文件显式写了配色配对（见文件末尾），配合 设置 → 主题 → 打开「跟随系统夜间模式」即可自动切换；
+#       详见 README 第七、八节。
 patch:
   # ==========================================================================
   # 1. 小鹤双拼 · 17 键（四叶草/宇宙十七键）—— 小鹤双拼方案的默认键盘
@@ -295,28 +283,30 @@ patch:
   # 6. 可选：界面微调（不需要就整段删掉/注释）
   #    page_size（候选个数）不在这里改，见 <方案>.custom.yaml
   # ==========================================================================
-  "style/keyboard_height": 260         # 竖屏键盘总高（px）；5 行布局建议 250~270
-  "style/keyboard_height_land": 200    # 横屏
-  "style/key_long_text_size": 15       # 两个字母的键（QW、OP 等）字号
-  "style/symbol_text_size": 11         # 上滑符号 / 韵母助记(hint) 字号
+  # "style/keyboard_height": 260         # 竖屏键盘总高（px）；5 行布局建议 250~270
+  # "style/keyboard_height_land": 200    # 横屏
+  # "style/key_long_text_size": 15       # 两个字母的键（QW、OP 等）字号
+  # "style/symbol_text_size": 11         # 上滑符号 / 韵母助记(hint) 字号
 
   # ==========================================================================
-  # 7. 可选：深色模式 / 夜间配色自动切换（默认全部注释，需要时去掉注释）
+  # 主题缺少的预设键：内置 trime.yaml 有 Return1，mint / 单静 主题没有，
+  # 而我们的键盘用了 composing: Return1，所以在这里补上。
+  # ==========================================================================
+  "preset_keys/Return1":
+    label: Enter
+    send: Return
+
+  # ==========================================================================
+  # 明暗配对（「跟随系统夜间模式」用）
   # --------------------------------------------------------------------------
-  # 前提：Trime 设置 → 主题 → 打开「跟随系统夜间模式」开关；
-  #       设置 → 高级 → 用户界面模式 选「自动」（界面部分跟随系统）。
-  # 语义（v3.3.12 ColorManager.evaluateActiveColorScheme）：
-  #   只写 dark_scheme  → 本配色是「亮色」，夜间切到 dark_scheme
-  #   只写 light_scheme → 本配色是「暗色」，白天切到 light_scheme
-  #   两个都写          → 按当前模式二选一
-  #   都不写            → 回退到 default 配色的那对链接（都没有则用 default）
-  # 用法：部署后把「配色」选成 flypy（小鹤飞扬，白底），然后切换系统深色模式。
-  # 内置可用深色配色：dark_temple(暗堂)/steam/ps4/starcraft_ii/solarized_rock/dota_2/modern_warfare
-  # 内置可用浅色配色：default/aqua/luna/google/flypy/cool_breeze/so_young
-  # --------------------------------------------------------------------------
-  # "preset_color_schemes/flypy/dark_scheme": dark_temple        # 白天 flypy → 夜间 暗堂
-  # "preset_color_schemes/dark_temple/light_scheme": flypy       # 反向：选中 暗堂 时白天切回 flypy
-  #
-  # 想让「所有」配色都跟着系统变（未写链接的配色会回退到 default 的这对）：
-  # "preset_color_schemes/default/dark_scheme": dark_temple
-  # "preset_color_schemes/default/light_scheme": default
+  # Trime 没有「分别选浅色/深色主题」的界面：它只看你当前选中的【配色】，
+  # 再按该配色里的 light_scheme / dark_scheme 两个链接决定另一模式用哪个配色。
+  # 这里显式写死配对，免得依赖主题（或主题变体的覆盖行为）：
+  #   日间 -> google_white    夜间 -> default（本主题配色）
+  # 想换别的：改这两行即可（值必须是对应主题里存在的配色 ID，见主题 yaml 的 preset_color_schemes）。
+  # ==========================================================================
+  "preset_color_schemes/google_white/dark_scheme": default
+  "preset_color_schemes/default/light_scheme": google_white
+
+  # 上面的 style 微调（键盘高度/字号）已注释掉，保留主题自己的 style；
+  # 如果 17/18/24 键看起来太挤，把它们放开即可。

@@ -7,9 +7,32 @@ patch:
     reset: 0
     states: ["中文", "英文"]
   "menu/page_size": 9          # 候选个数必须在方案自己的 custom 里改（薄荷把 menu 冗余写进了每个方案）
-  __include: wanxiang:/settings
+
   # 打印原始字符
   translator/preedit_format: []
+
+  # ==========================================================================
+  # 万象模型设置（原本写成 __include: wanxiang:/settings，这里**必须内联**）
+  # --------------------------------------------------------------------------
+  # ⚠️ 为什么不能再用 __include：
+  #    同一个补丁文件里如果既有 `__include: wanxiang:/settings`，又有下面的
+  #    `"speller/algebra/+"` 追加操作，librime 会把这条方案编译坏：
+  #    部署显示成功，但**任何输入都没有候选**（输入框里只有原始编码，例如打 ni 不出「你」），
+  #    而同一台设备上的全拼方案（rime_mint，也是 __include 但没有 algebra 追加）却正常。
+  #    这个问题我在本机用 librime 1.16 复现并逐项验证过：
+  #      · __include + algebra 追加   → 无候选（已复现两次，与顺序无关、与 .gram 无关）
+  #      · 内联设置 + algebra 追加    → 一切正常（ni→你、bi→你/比、lq→累/刘、nihc→你好）
+  #    所以这里把 wanxiang.yaml 的内容内联过来；wanxiang.yaml 仍然保留，
+  #    供 rime_mint.custom.yaml（全拼，没有 algebra 追加）继续 __include。
+  #    以后要改万象参数：这两个地方一起改。
+  # ==========================================================================
+  grammar:
+    language: wanxiang-lts-zh-hans
+    collocation_max_length: 5
+    collocation_min_length: 2
+  "translator/contextual_suggestions": true
+  "translator/max_homophones": 7
+  "translator/max_homographs": 7
 
   # ==========================================================================
   # 共键（17 / 18 / 24 键）拼写扩展
@@ -28,6 +51,8 @@ patch:
   #
   # 例：累(lei) 的小鹤码是 lw，derive/w/q/ 之后同时接受 lw 和 lq；
   #     在 17/18/24 键上按 QW/OP… 里的代表键 q 即可打出「累 / 刘」等候选。
+  #     你(ni) 的小鹤码是 ni，derive/n/b/ 之后也接受 bi，
+  #     所以在 17 键上按 BN 键(b) + I 就能打出「你」。
   #
   # 不想要共键（例如要恢复 26 键严格输入、或使用小鹤音形辅助码）：
   #     把 "speller/algebra/+" 整段删掉，然后重新部署。
