@@ -1,0 +1,20 @@
+# default.custom.yaml —— 全局补丁（Android / 同文输入法 Trime）
+# encoding: utf-8
+#
+# 注意（薄荷/oh-my-rime 官方说明）：
+#   本文件只放「全局」配置。候选个数(menu/page_size)、快捷键(key_binder) 请不要写在这里，
+#   而要写在对应方案的 <方案>.custom.yaml 里 —— 因为薄荷为了兼容 Rimetool，
+#   把 menu / key_binder 冗余写进了每个方案文件，方案文件的优先级高于 default.yaml。
+#
+# Trime 的「方案」设置页本质上也是在维护这里的 schema_list。
+patch:
+  # 物理键盘/外接键盘的中英切换行为（Android 软键盘上基本用不到，保留与桌面端一致）
+  "ascii_composer/switch_key":
+    Caps_Lock: noop
+    Shift_L: noop
+    Shift_R: noop
+    Control_L: noop
+    Control_R: noop
+  schema_list:
+    - schema: double_pinyin_flypy # 小鹤双拼（默认 17 键键盘，见 trime.custom.yaml）
+    - schema: rime_mint          # 薄荷拼音-全拼（自动使用内置 26 键键盘）

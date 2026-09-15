@@ -1,0 +1,12 @@
+# rime_mint.custom.yaml —— 薄荷拼音-全拼：Android / 同文输入法(Trime) 补丁
+# encoding: utf-8
+#
+# 全拼方案不使用共键（17/18/24 键是给小鹤双拼用的），
+# Trime 会按 speller/alphabet（26 个字母）自动给它套用内置的 qwerty 26 键键盘。
+patch:
+  # 强制默认中文，并把 ascii_mode 的 reset 设为 0
+  "switches/@0":
+    name: ascii_mode
+    reset: 0
+    states: ["中文", "西文"]
+  __include: wanxiang:/settings

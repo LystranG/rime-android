@@ -1,0 +1,44 @@
+# double_pinyin_flypy.custom.yaml —— 小鹤双拼-薄荷定制：Android / 同文输入法(Trime) 补丁
+# encoding: utf-8
+patch:
+  # 强制默认中文，并把 ascii_mode 的 reset 设为 0
+  "switches/@0":
+    name: ascii_mode
+    reset: 0
+    states: ["中文", "英文"]
+  "menu/page_size": 9          # 候选个数必须在方案自己的 custom 里改（薄荷把 menu 冗余写进了每个方案）
+  __include: wanxiang:/settings
+  # 打印原始字符
+  translator/preedit_format: []
+
+  # ==========================================================================
+  # 共键（17 / 18 / 24 键）拼写扩展
+  # --------------------------------------------------------------------------
+  # Trime 的 17/18/24 键键盘「一个键发一个字母」（四叶草・宇宙十七键的做法），
+  # 被合并掉的两个字母靠下面的 derive 规则「改写」到代表字母上：
+  #     q←w   e←r   t←y   o←p   a←s   d←f   j←k   z←x   b←n
+  #   · 17 键：全部 9 组
+  #   · 18 键：前 8 组（B/N 不合并）
+  #   · 24 键：只用 o←p、j←k
+  #
+  # 用 derive（而不是 xform / xlit）的原因：
+  #   derive 只「新增」一条拼写，原拼写仍然有效 —— 所以
+  #   ① 24 键上单独的 w / r / y / p / s / f / k / x / n 键不会被废掉；
+  #   ② 26 键全键盘（例如桌面端、或 Trime 内置 qwerty）依然能正常输入。
+  #
+  # 例：累(lei) 的小鹤码是 lw，derive/w/q/ 之后同时接受 lw 和 lq；
+  #     在 17/18/24 键上按 QW/OP… 里的代表键 q 即可打出「累 / 刘」等候选。
+  #
+  # 不想要共键（例如要恢复 26 键严格输入、或使用小鹤音形辅助码）：
+  #     把 "speller/algebra/+" 整段删掉，然后重新部署。
+  # ==========================================================================
+  "speller/algebra/+":
+    - "derive/w/q/"   # q  ← w   （iu / ei）
+    - "derive/r/e/"   # e  ← r   （e / uan·er）
+    - "derive/y/t/"   # t  ← y   （ue / un）
+    - "derive/p/o/"   # o  ← p   （uo·o / ie）
+    - "derive/s/a/"   # a  ← s   （a / ong·iong）
+    - "derive/f/d/"   # d  ← f   （ai / en）
+    - "derive/k/j/"   # j  ← k   （an / ing·uai）
+    - "derive/x/z/"   # z  ← x   （ou / ia·ua）
+    - "derive/n/b/"   # b  ← n   （in / iao）

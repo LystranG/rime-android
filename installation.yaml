@@ -1,0 +1,22 @@
+# installation.yaml —— 安装信息 / 同步目录（Android / 同文输入法 Trime）
+# encoding: utf-8
+#
+# 这个文件由 librime 读取，Trime 的「同步」功能会用到它：
+#   * installation_id：本机标识，必须【每台设备不同】。这里设为 android，
+#     同步后会在同步目录下生成 sync/android/ 子目录（*.userdb.txt 等）。
+#   * sync_dir：同步目录。
+#       - 相对路径 → <Trime 用户文件夹>/<sync_dir>，所以这里的 "sync"
+#         就是「Trime 用户目录/sync」（用户希望的位置）。
+#       - 绝对路径 → 原样使用（例如想和 mac 共用：
+#         sync_dir: "/storage/emulated/0/Documents/RimeSync"，
+#         配合 Syncthing 等把该目录同步到 mac 的 /Users/lystran/data/rime）。
+#
+# 注意：
+#   * Trime 的「外部同步」只导入对端 <sync_dir>/<设备ID>/ 目录，且永不覆盖本机
+#     installation.yaml，所以本文件可以安全地放进配置目录一起部署。
+#   * 同步会顺带把用户目录根部的 YAML/TXT 单向备份一份，因此不要把正在使用的
+#     userdb 目录直接丢给网盘同步，只同步 sync 目录。
+#   * distribution_* / rime_version / install_time 会由 Trime 首次部署时自动补全，
+#     所以这里不写，避免写错版本号。
+installation_id: android
+sync_dir: "sync"

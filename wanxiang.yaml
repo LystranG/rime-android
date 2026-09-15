@@ -1,0 +1,22 @@
+# wanxiang.yaml —— 万象模型（词库调参）设置片段
+# encoding: utf-8
+#
+# 被方案补丁通过 __include: wanxiang:/settings 引用，例如：
+#   double_pinyin_flypy.custom.yaml / rime_mint.custom.yaml 里的
+#       __include: wanxiang:/settings
+#
+# 说明（Android / Trime）：
+#   * 这里只调「万象词库 + 语言模型」的参数，词库本体由 oh-my-rime 自带的
+#     dicts/rime_mint.*.dict.yaml（万象词库）提供，无需额外下载。
+#   * grammar/language 指向的语法模型文件 wanxiang-lts-zh-hans.gram（约 400MB）
+#     本配置目录里【没有】提供：Trime 缺少该文件时会在日志里提示加载失败并按
+#     「无语言模型」继续工作，不影响正常输入。若要启用，把该 .gram 文件放到
+#     Trime 用户目录根部，再重新部署即可（内存/存储占用较大，请自行评估）。
+settings:
+  grammar:
+    language: wanxiang-lts-zh-hans
+    collocation_max_length: 5
+    collocation_min_length: 2
+  "translator/contextual_suggestions": true
+  "translator/max_homophones": 7
+  "translator/max_homographs": 7
