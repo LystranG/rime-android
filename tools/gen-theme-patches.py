@@ -73,6 +73,24 @@ THEMES = {
 }
 
 
+# 主题特有的「额外补丁」：少数主题的写法会让 Trime 解码主题时报错，必须在补丁里改掉。
+# 每项是若干行 YAML（缩进与 patch 下其它键一致，即两个空格）。
+EXTRA_PATCH = {
+    "单静.cherry.trime": [
+        "",
+        "  # ==========================================================================",
+        "  # cherry 主题的 preset_color_schemes/default 里带一个 `colors:` 列表",
+        "  # （作者用 YAML 锚点在那里定义颜色；这个键对 Trime 本身没有意义）。",
+        "  # Trime 解码配色时对每个值都做 `v.string!!`（data/theme/Theme.kt:79，3.3.12 与",
+        "  # develop 一致）：列表不是标量 → 抛异常 → 整个主题被静默回退到内置 trime",
+        "  # （现象就是「选了主题还是和默认一样」）。",
+        "  # 锚点引用在 YAML 解析阶段就展开成字面值了，所以把这里置成空串不影响任何颜色。",
+        "  # ==========================================================================",
+        '  "preset_color_schemes/default/colors": ""',
+    ],
+}
+
+
 def load_patch_body():
     """从 trime.custom.yaml 取出 patch 下的内容，并注释掉 style 微调。"""
     text = open(SRC, encoding="utf-8").read()
@@ -166,7 +184,10 @@ def main():
     body = load_patch_body()
     written = []
     for theme_id, (desc, files, light, dark) in THEMES.items():
+        extra = EXTRA_PATCH.get(theme_id, [])
         content = header(theme_id, desc, files) + "\n" + body + "\n" + pair_block(light, dark, theme_id)
+        if extra:
+            content += "\n" + "\n".join(extra) + "\n"
         path = os.path.join(ROOT, f"{theme_id}.custom.yaml")
         with open(path, "w", encoding="utf-8") as fh:
             fh.write(content)

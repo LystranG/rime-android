@@ -35,6 +35,29 @@ conf:
   sym_bottom_switch: 0 #底部留白开关
   sym_bottom: 1 #底部留白
   sym_long_text_size: 20 #长标签字号
+  # >>> 补入「conf」块：上游 mint.trime.yaml 漏抄的依赖，缺了 librime 编译会失败（见 README 第八节）
+  # 数据取自 danjing.yaml（mint 的键盘就是从它抄的）；单静.trime:/conf/sym_bottom=1、
+  # sym_bottom_switch=0 已展开为字面量，免得 librime 编译主题时报
+  #   unresolved dependency: Include(mint.trime:conf/...) → 主题被静默回退。
+  sym:
+    author: 单单 <cxprcn@gmail.com>
+    ascii_mode: 1
+    width: 12
+    key_press_offset_x: 2
+    key_press_offset_y: 2
+    round_corner: 0
+  bottom:
+    keys/+:
+    - width: 0
+      height: 1
+  ywz:
+    author: 单单 <cxprcn@gmail.com>
+    ascii_mode: 1
+    width: 28
+    key_press_offset_x: 2
+    key_press_offset_y: 2
+    round_corner: 0
+  # <<< 补入「conf」块结束
 
 style:
   __include: trime:/style
@@ -385,6 +408,53 @@ styl:
     hilited_key_back_color: hilited_off_sym_back_color
     key_text_color: off_sym_text_color
     hilited_key_text_color: hilited_off_sym_text_color
+  # >>> 补入「styl」块：上游 mint.trime.yaml 漏抄的依赖，缺了 librime 编译会失败（见 README 第八节）
+  # 数据取自 danjing.yaml 的 styl 库；单静.trime:/conf/menu_height=41、sym_long_text_size=20
+  # 已展开为字面量，免得 librime 编译主题时报
+  #   unresolved dependency: Include(mint.trime:styl/...) → 主题被静默回退。
+  off_sym:
+    width: 16
+    key_back_color: off_sym_back_color
+    hilited_key_back_color: hilited_off_sym_back_color
+  unavl_off_sym:
+    width: 16
+    key_back_color: off_sym_back_color
+    hilited_key_back_color: off_sym_back_color
+    key_text_color: hilited_off_sym_back_color
+    hilited_key_text_color: hilited_off_sym_back_color
+  hilited_menu:
+    height: 41
+    width: 12.5
+    key_back_color: hilited_menu_back_color
+    hilited_key_back_color: hilited_menu_back_color
+    key_text_color: hilited_menu_text_color
+    hilited_key_text_color: hilited_menu_text_color
+  menu:
+    height: 41
+    width: 12.5
+    key_back_color: menu_back_color
+    hilited_key_back_color: hilited_menu_back_color
+    key_text_color: menu_text_color
+    hilited_key_text_color: hilited_menu_text_color
+  long_text_size:
+    key_text_size: 20
+  ywz_hilited_menu:
+    height: 41
+    width: 16
+    key_back_color: hilited_menu_back_color
+    hilited_key_back_color: hilited_menu_back_color
+    key_text_color: hilited_menu_text_color
+    hilited_key_text_color: hilited_menu_text_color
+  ywz_menu:
+    height: 41
+    width: 16
+    key_back_color: menu_back_color
+    hilited_key_back_color: hilited_menu_back_color
+    key_text_color: menu_text_color
+    hilited_key_text_color: hilited_menu_text_color
+  ywz_double_width:
+    width: 56
+  # <<< 补入「styl」块结束
 
 preset_keyboards:
   symbols:

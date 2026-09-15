@@ -14,7 +14,11 @@
 | `wanxiang.yaml` | 万象模型的 `grammar` / `translator` 调参片段。**目前只被全拼 `rime_mint.custom.yaml` 用 `__include` 引用**；小鹤双拼因为要与 `speller/algebra/+` 共存，已改为在 `double_pinyin_flypy.custom.yaml` 里**内联**（原因见第四节，重要）|
 | `trime.custom.yaml` | **Trime 前端主题补丁**：17 / 18 / 24 键中文键盘 + 英文 26 键键盘 + 键盘切换按键 + 界面微调 |
 | `installation.yaml` | 安装信息：`installation_id: android`，`sync_dir: "sync"`（= Trime 用户目录/sync） |
-| `tools/gen-theme-patches.py` | 由 `trime.custom.yaml` 一键重新生成上述 6 个主题补丁（改键盘/改配色配对后跑一下）|
+| `mint.trime.yaml` | 薄荷主题源文件。⚠️ **本仓库这份已补入上游漏掉的 `styl`/`conf` 定义，不要用上游原版直接覆盖**（否则 librime 编译失败、主题静默回退，见第八节）|
+| `<主题>.trime.yaml` | 单静 / 单静+ / 单静·樱桃 / 单纯 / 单纯+ 各自的主题源文件（上游原样）|
+| `danjing.yaml`、`单静.patch.无障碍.yaml` | 单静系主题的**硬依赖**（键盘库 + 无障碍补丁），必须和主题一起部署 |
+| `backgrounds/` | 两套主题的背景图（`mint_*` / `danjing.*` 互不干扰）|
+| `tools/gen-theme-patches.py` | 由 `trime.custom.yaml` 一键重新生成 6 个主题补丁（改键盘/改配色配对后跑一下）|
 | `README-Trime-Android.md` | 本说明文件 |
 
 > 主题的**源码仓库（`themes/`，约 22MB，含 PSD 模板/Demo）已删除** —— 部署不需要它，
@@ -371,6 +375,34 @@ patch:
 | 单静（`nopdan/danjing`） | `单静.trime.yaml`、`danjing.yaml`、`单静.patch.无障碍.yaml` + `backgrounds/danjing.*/` | 主主题。注意 `danjing.yaml` 是它的**键盘库**（被 `danjing:/keyboards` 引用）、`单静.patch.无障碍.yaml` 被 `__patch` 引用，两者都**必须有** |
 | 单静+ / 单静·樱桃 / 单纯 / 单纯+ | 各自的 `*.trime.yaml` + 上面单静那三个文件 + backgrounds | 变体主题，都 `__include` 单静主主题 |
 
+### ⚠️ 主题「失效」的机制与两个必修项（2026-09 已修）
+
+**机制**：Trime 3.3.10 以后，主题是「先编译、再解码」两段式（`ThemeManager.loadThemeByIdOrNull`：
+`Rime.deployRimeConfigFile()` 把 `<主题>.yaml` 编译成 `build/<主题>.yaml` → 读它 → `Theme.decode()`）。
+**任何一步失败都会静默回退到内置 `trime` 主题** —— 界面没有任何提示，只有 logcat 里一行
+`Theme 'X' is unavailable, fallback to default theme 'trime'`。所以「选了主题还是默认的样子」= 回退了。
+判断方法：选完主题看【**配色**】列表是否变成该主题自己的配色（内置 trime 有 37 个，单静系只有几个）。
+
+两个上游主题本身有问题，本仓库已修（用 Squirrel 自带 librime 1.16/1.17 + Trime 3.3.12 的解码规则实测）：
+
+| 主题 | 问题 | 表现 | 修法 |
+| --- | --- | --- | --- |
+| 薄荷 mint | 源文件漏抄依赖：键盘里有 300+ 处 `__include: styl/...`、`__include: conf/sym`、`__patch: conf/bottom`，但它自己的 `styl` 只有 `key`/`off_key`/`off_func`，`conf` 也没有 `sym`/`bottom`（它其实是照 `danjing.yaml` 抄的键盘，却没把依赖抄全）| librime 报 `unresolved dependency: Include(mint.trime:styl/off_sym)` → `error building config: mint.trime` → **不产出** `build/mint.trime.yaml` → 回退 | 本仓库的 `mint.trime.yaml` 已在 `styl:` / `conf:` 末尾用 `# >>> 补入…块` 标出补入的节点（数据取自 `danjing.yaml`，`单静.trime:/conf/*` 已展开为字面量）。**上游原版不要直接覆盖本文件**；要跟上游更新就手工合并，或按此说明把缺的节点从 `danjing.yaml` 搬过来 |
+| 单静·樱桃 | `preset_color_schemes/default` 里带一个 `colors:` **列表**（作者用 YAML 锚点在那里定义颜色）| 主题能编译，但 `Theme.decode` 对配色里每个值都做 `v.string!!`（`data/theme/Theme.kt:79`，3.3.12 与 develop 一致）→ 列表不是标量 → 抛异常 → 回退 | 主题补丁里加了一行 `"preset_color_schemes/default/colors": ""`（锚点在 YAML 解析阶段早已展开成字面值，置空不影响颜色）|
+
+**两条通用规则（本次实测结论，踩着坑记下来）**：
+
+1. **`.custom.yaml` 补丁无法满足主题源码里的 `__include`**：补丁是在 include 解析**之后**才合并进树的。
+   实测 `styl/+`（值是字面量、带 `__include` 都试过）、把 `preset_keyboards` 整块换成
+   `__include: danjing:/preset_keyboards` —— 全都仍然报同一个 unresolved 错误。所以这类问题**只能改主题源文件**
+   （mint 就是这么修的）；反过来，补丁能做的是「覆盖数据」（键盘、预设键、配色链接）和「删掉坏值」（cherry 那行）。
+2. **单静系主题的硬依赖（`danjing.yaml`，变体还要 `单静.patch.无障碍.yaml`）必须在 librime 编译时用的那个目录里**：
+   Trime ≥3.3.12 的「从外部存储同步」模式下，运行时目录是 app 私有目录
+   `Android/data/com.osfans.trime/files/rime`；而**在设置里点主题时，Trime 只会把 `<主题>.trime.yaml` 这一个文件**
+   从外部目录拷进内部目录（`RimeDataSync.importThemeToLocal` 里只找 `"$configId.yaml"`）。
+   所以：改完主题文件必须先【部署】（整树导入 + 编译）再选主题，否则 4 个单静系主题会**一起**编译失败 → 看起来「全都失效」。
+   实测：内部目录里挑掉 `danjing.yaml`，`单静.trime` 必定 `error building config` 且没有产物。
+
 ### 与 17/18/24 键键盘的兼容性
 
 * **不冲突**：两套主题只定义自己的 `preset_keyboards`（`default`/`letter`/`number`/`qwerty_`/`qwertys` 等），没有和我们的 `double_pinyin_flypy` / `flypy_18` / `flypy_24` / `flypy_en` 重名。
@@ -437,11 +469,16 @@ preset_color_schemes/<当前配色>/dark_scheme:  <夜间用哪个配色>
   git clone --depth 1 https://github.com/Mintimate/RimeTheme themes/RimeTheme
   git clone --depth 1 https://github.com/nopdan/danjing  themes/danjing
   # 再把有用的文件拷回根目录（★ 注意把新版的 *.trime.yaml / backgrounds/ 覆盖过来）：
-  #   RimeTheme/ThemeForTrime/mint.trime.yaml + RimeTheme/ThemeForTrime/backgrounds/mint_*
+  #   RimeTheme/ThemeForTrime/backgrounds/mint_*（mint.trime.yaml 见下！）
   #   danjing/{单静,单静+,单静.cherry,单纯,单纯+}.trime.yaml、danjing.yaml、单静.patch.无障碍.yaml、backgrounds/danjing.*
-  # 拷完重新生成主题补丁（脚本顶部 THEMES 表里的配对/文件清单不会变）：
+  # ★ mint.trime.yaml 例外：上游那版缺 styl/conf 依赖（编译必失败），
+  #   要把它上游的改动手工合并进本仓库这份，别直接覆盖。
+  # 拷完重新生成主题补丁：
   python3 tools/gen-theme-patches.py
   ```
+
+  > ⚠️ 单静系（含樱桃）的主题文件、`danjing.yaml`、`backgrounds/` 可以直接用上游新版覆盖；
+  > **只有 `mint.trime.yaml` 不能**（上游缺依赖 → 编译失败 → 静默回退，见上面的表）。
 
   产出的主题补丁已自检：YAML 可解析、每个键盘每行宽度和为 100。
 * 根目录的 `backgrounds/` 是两套主题合并的（mint 用 `mint_*`，单静用 `danjing.*`，互不干扰，共约 292KB）。
@@ -489,6 +526,35 @@ preset_color_schemes/<当前配色>/dark_scheme:  <夜间用哪个配色>
 6. 在密码框等强制英文的输入框里，键盘自动变成 26 键英文键盘。
 7. 【同步用户数据】后，检查 `sync/android/` 下是否生成 `*.userdb.txt`。
 8. 简繁切换（`简` 键）能生效。
+9. 设置 → 主题：选完主题后看【**配色**】列表是否变成该主题自己的配色（内置 trime 37 个；单静系
+   默认/谷歌白/谷歌黑/…）。若配色列表没变，就是主题编译/解码失败被静默回退到内置主题了（见下）。
+
+### 如果「选了主题但外观没变化」（= 主题被静默回退）
+
+Trime 不会报错，只会回退到内置 `trime` 主题（原因与两个必修项见第八节）。按顺序查：
+
+1. **选完主题看【配色】列表**：没变成该主题的配色 → 确实在回退。
+2. **确认内部目录里依赖齐全**（librime 编译用的就是这里，不是外部目录）：
+
+   ```bash
+   adb shell run-as com.osfans.trime ls -la /storage/emulated/0/Android/data/com.osfans.trime/files/rime/
+   # 应有：单静.trime.yaml、danjing.yaml、单静.trime.custom.yaml、mint.trime.yaml（已修版）、backgrounds/
+   adb shell run-as com.osfans.trime ls -la /storage/emulated/0/Android/data/com.osfans.trime/files/rime/build/ | grep trime
+   # 每个主题应有一个 <主题>.yaml（没有 = 编译失败）
+   ```
+
+3. **抓一行日志**（最直接）：
+
+   ```bash
+   adb logcat -c        # 清空
+   # 然后在手机上点一次主题
+   adb logcat -d | grep -iE "fallback|error building config|unresolved dependency"
+   ```
+
+   看到 `Theme 'X' is unavailable, fallback to default theme 'trime'` 就是回退了；紧跟的 `E` 行会直接写明
+   缺哪个引用/哪条配色。把这几行贴出来就能定位。
+4. **最容易被路过的坑**：改完主题文件没重新【部署】，或者只把主题文件放进了外部目录还没导入 —— 见第八节规则 2。
+5. mint 主题：本仓库这份 `mint.trime.yaml` 已补过依赖，**别用上游原版覆盖**（上游那版一定编译失败）。
 
 ### 如果「小鹤双拼没候选，但全拼正常」（本 repo 曾出现过，已修复）
 
