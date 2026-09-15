@@ -20,184 +20,175 @@
 #       详见 README 第七、八节。
 patch:
   # ==========================================================================
-  # 1. 小鹤双拼 · 17 键（四叶草/宇宙十七键）—— 小鹤双拼方案的默认键盘
+  # 1. 小鹤双拼 · 17 键（四叶草/宇宙十七键）—— 对应方案 double_pinyin_flypy_17（默认布局）
   #    字母键 17 个，3 行 6+6+5；数字行 / 功能行参考 cosmic17key 的排版
   # ==========================================================================
-  "preset_keyboards/double_pinyin_flypy":
+  "preset_keyboards/double_pinyin_flypy_17":
     name: "小鹤双拼·17键（四叶草）"
     author: "clover/forFudan 布局，Trime 移植"
     ascii_mode: 0            # 进入时默认中文
     reset_ascii_mode: true   # 切换/弹出键盘时回到 ascii_mode 指定的状态
     ascii_keyboard: flypy_en # 应用强制英文（如密码框）时自动跳到英文 26 键
     lock: true               # 切换 App 时记住本键盘
+    __patch: conf/main
     width: 9                 # 默认键宽权重（整行 = 100）
-    height: 44               # 默认行高（最终按 style/keyboard_height 等比缩放）
     keys:
       # ---- 第 1 行：数字（上滑打符号）----
-      - {click: '1', label: '1', swipe_up: '!', height: 34}
-      - {click: '2', label: '2', swipe_up: '@'}
-      - {click: '3', label: '3', swipe_up: '#'}
-      - {click: '4', label: '4', swipe_up: '$'}
-      - {click: '5', label: '5', swipe_up: '%'}
-      - {click: '6', label: '6', swipe_up: '^'}
-      - {click: '7', label: '7', swipe_up: '&'}
-      - {click: '8', label: '8', swipe_up: '*'}
-      - {click: '9', label: '9', swipe_up: '('}
-      - {click: '0', label: '0', swipe_up: ')'}
-      - {click: Trime_transcription, width: 10}   # 简/繁 切换（薄荷的 transcription 开关）
+      - {click: '1', label: '1', swipe_up: '!', __include: styl/key}
+      - {click: '2', label: '2', swipe_up: '@', __include: styl/key}
+      - {click: '3', label: '3', swipe_up: '#', __include: styl/key}
+      - {click: '4', label: '4', swipe_up: '$', __include: styl/key}
+      - {click: '5', label: '5', swipe_up: '%', __include: styl/key}
+      - {click: '6', label: '6', swipe_up: '^', __include: styl/key}
+      - {click: '7', label: '7', swipe_up: '&', __include: styl/key}
+      - {click: '8', label: '8', swipe_up: '*', __include: styl/key}
+      - {click: '9', label: '9', swipe_up: '(', __include: styl/key}
+      - {click: '0', label: '0', swipe_up: ')', __include: styl/key}
+      - {click: Trime_transcription, width: 10, __include: styl/off_key}   # 简/繁 切换（薄荷的 transcription 开关）
       # ---- 第 2 行：QW ER TY U I OP ----
-      - {click: q, label: 'QW', hint: 'iu·ei',  width: 17}
-      - {click: e, label: 'ER', hint: 'e·uan',  width: 17}
-      - {click: t, label: 'TY', hint: 'ue·un',  width: 17}
-      - {click: u, label: 'U',  hint: 'u',      width: 16}
-      - {click: i, label: 'I',  hint: 'i',      width: 16}
-      - {click: o, label: 'OP', hint: 'uo·ie',  width: 17}
+      - {click: q, label: 'QW', hint: 'iu·ei',  width: 17, __include: styl/key}
+      - {click: e, label: 'ER', hint: 'e·uan',  width: 17, __include: styl/key}
+      - {click: t, label: 'TY', hint: 'ue·un',  width: 17, __include: styl/key}
+      - {click: u, label: 'U',  hint: 'u',      width: 16, __include: styl/key}
+      - {click: i, label: 'I',  hint: 'i',      width: 16, __include: styl/key}
+      - {click: o, label: 'OP', hint: 'uo·ie',  width: 17, __include: styl/key}
       # ---- 第 3 行：AS DF G H JK L ----
-      - {click: a, label: 'AS', hint: 'a·ong',  width: 17}
-      - {click: d, label: 'DF', hint: 'ai·en',  width: 17}
-      - {click: g, label: 'G',  hint: 'eng',    width: 16}
-      - {click: h, label: 'H',  hint: 'ang',    width: 16}
-      - {click: j, label: 'JK', hint: 'an·ing', width: 17}
-      - {click: l, label: 'L',  hint: 'iang',   width: 17}
+      - {click: a, label: 'AS', hint: 'a·ong',  width: 17, __include: styl/key}
+      - {click: d, label: 'DF', hint: 'ai·en',  width: 17, __include: styl/key}
+      - {click: g, label: 'G',  hint: 'eng',    width: 16, __include: styl/key}
+      - {click: h, label: 'H',  hint: 'ang',    width: 16, __include: styl/key}
+      - {click: j, label: 'JK', hint: 'an·ing', width: 17, __include: styl/key}
+      - {click: l, label: 'L',  hint: 'iang',   width: 17, __include: styl/key}
       # ---- 第 4 行：Shift ZX C V BN M BackSpace ----
       - {click: Shift_L, width: 13}
-      - {click: z, label: 'ZX', hint: 'ou·ia',   width: 18}
-      - {click: c, label: 'C',  hint: 'ao',      width: 15}
-      - {click: v, label: 'V',  hint: 'ui',      width: 15}
-      - {click: b, label: 'BN', hint: 'in·iao',  width: 18}
-      - {click: m, label: 'M',  hint: 'ian',     width: 13}
+      - {click: z, label: 'ZX', hint: 'ou·ia',   width: 18, __include: styl/key}
+      - {click: c, label: 'C',  hint: 'ao',      width: 15, __include: styl/key}
+      - {click: v, label: 'V',  hint: 'ui',      width: 15, __include: styl/key}
+      - {click: b, label: 'BN', hint: 'in·iao',  width: 18, __include: styl/key}
+      - {click: m, label: 'M',  hint: 'ian',     width: 13, __include: styl/key}
       - {click: BackSpace, width: 8}
       # ---- 第 5 行：功能行 ----
-      - {click: Keyboard_flypy_en, width: 12}                                  # 中 → 英
-      - {click: Keyboard_symbols, long_click: Keyboard_number, width: 10}     # 符号 / 长按数字键盘
-      - {click: Keyboard_flypy_17, width: 8}                                   # 切到 17 键
-      - {click: Keyboard_flypy_18, width: 8}                                   # 切到 18 键
-      - {click: Keyboard_flypy_24, width: 8}                                   # 切到 24 键
-      - {click: space, swipe_up: Menu, width: 26}                              # 空格 / 上滑方案菜单
-      - {click: ',', label: '，。', swipe_up: '.', width: 10}
-      - {click: Return, composing: Return1, width: 18}
+      - {click: Keyboard_flypy_en, width: 12, __include: styl/off_key}                                  # 中 → 英
+      - {click: Keyboard_symbols, long_click: Keyboard_number, width: 10, __include: styl/off_key}     # 符号 / 长按数字键盘（17/18/24 在方案菜单切换）
+      - {click: space, swipe_up: Menu, width: 50, key_back_color: space_back_color, hilited_key_back_color: hilited_space_back_color}                              # 空格 / 上滑方案菜单（选 17/18/24 键布局）
+      - {click: ',', label: '，。', swipe_up: '.', width: 10, __include: styl/key}
+      - {click: Return, composing: Return1, width: 18, key_back_color: enter_back_color, hilited_key_back_color: hilited_enter_back_color, key_text_color: enter_text_color, hilited_key_text_color: enter_text_color}
 
   # ==========================================================================
-  # 2. 小鹤双拼 · 18 键 —— 17 键基础上把 BN 拆成 B / N（3 行 6+6+6）
+  # 2. 小鹤双拼 · 18 键 —— 17 键基础上把 BN 拆成 B / N（3 行 6+6+6）—— 对应方案 double_pinyin_flypy_18
   # ==========================================================================
-  "preset_keyboards/flypy_18":
+  "preset_keyboards/double_pinyin_flypy_18":
     name: "小鹤双拼·18键"
     author: "clover/forFudan 布局，Trime 移植"
     ascii_mode: 0
     reset_ascii_mode: true
     ascii_keyboard: flypy_en
     lock: true
+    __patch: conf/main
     width: 9
-    height: 44
     keys:
       # ---- 第 1 行：数字 ----
-      - {click: '1', label: '1', swipe_up: '!', height: 34}
-      - {click: '2', label: '2', swipe_up: '@'}
-      - {click: '3', label: '3', swipe_up: '#'}
-      - {click: '4', label: '4', swipe_up: '$'}
-      - {click: '5', label: '5', swipe_up: '%'}
-      - {click: '6', label: '6', swipe_up: '^'}
-      - {click: '7', label: '7', swipe_up: '&'}
-      - {click: '8', label: '8', swipe_up: '*'}
-      - {click: '9', label: '9', swipe_up: '('}
-      - {click: '0', label: '0', swipe_up: ')'}
-      - {click: Trime_transcription, width: 10}
+      - {click: '1', label: '1', swipe_up: '!', __include: styl/key}
+      - {click: '2', label: '2', swipe_up: '@', __include: styl/key}
+      - {click: '3', label: '3', swipe_up: '#', __include: styl/key}
+      - {click: '4', label: '4', swipe_up: '$', __include: styl/key}
+      - {click: '5', label: '5', swipe_up: '%', __include: styl/key}
+      - {click: '6', label: '6', swipe_up: '^', __include: styl/key}
+      - {click: '7', label: '7', swipe_up: '&', __include: styl/key}
+      - {click: '8', label: '8', swipe_up: '*', __include: styl/key}
+      - {click: '9', label: '9', swipe_up: '(', __include: styl/key}
+      - {click: '0', label: '0', swipe_up: ')', __include: styl/key}
+      - {click: Trime_transcription, width: 10, __include: styl/off_key}
       # ---- 第 2 行：QW ER TY U I OP ----
-      - {click: q, label: 'QW', hint: 'iu·ei',  width: 17}
-      - {click: e, label: 'ER', hint: 'e·uan',  width: 17}
-      - {click: t, label: 'TY', hint: 'ue·un',  width: 17}
-      - {click: u, label: 'U',  hint: 'u',      width: 16}
-      - {click: i, label: 'I',  hint: 'i',      width: 16}
-      - {click: o, label: 'OP', hint: 'uo·ie',  width: 17}
+      - {click: q, label: 'QW', hint: 'iu·ei',  width: 17, __include: styl/key}
+      - {click: e, label: 'ER', hint: 'e·uan',  width: 17, __include: styl/key}
+      - {click: t, label: 'TY', hint: 'ue·un',  width: 17, __include: styl/key}
+      - {click: u, label: 'U',  hint: 'u',      width: 16, __include: styl/key}
+      - {click: i, label: 'I',  hint: 'i',      width: 16, __include: styl/key}
+      - {click: o, label: 'OP', hint: 'uo·ie',  width: 17, __include: styl/key}
       # ---- 第 3 行：AS DF G H JK L ----
-      - {click: a, label: 'AS', hint: 'a·ong',  width: 17}
-      - {click: d, label: 'DF', hint: 'ai·en',  width: 17}
-      - {click: g, label: 'G',  hint: 'eng',    width: 16}
-      - {click: h, label: 'H',  hint: 'ang',    width: 16}
-      - {click: j, label: 'JK', hint: 'an·ing', width: 17}
-      - {click: l, label: 'L',  hint: 'iang',   width: 17}
+      - {click: a, label: 'AS', hint: 'a·ong',  width: 17, __include: styl/key}
+      - {click: d, label: 'DF', hint: 'ai·en',  width: 17, __include: styl/key}
+      - {click: g, label: 'G',  hint: 'eng',    width: 16, __include: styl/key}
+      - {click: h, label: 'H',  hint: 'ang',    width: 16, __include: styl/key}
+      - {click: j, label: 'JK', hint: 'an·ing', width: 17, __include: styl/key}
+      - {click: l, label: 'L',  hint: 'iang',   width: 17, __include: styl/key}
       # ---- 第 4 行：Shift ZX C V B N M BackSpace（B/N 已拆开）----
       - {click: Shift_L, width: 13}
-      - {click: z, label: 'ZX', hint: 'ou·ia', width: 13}
-      - {click: c, label: 'C',  hint: 'ao',    width: 12}
-      - {click: v, label: 'V',  hint: 'ui',    width: 12}
-      - {click: b, label: 'B',  hint: 'in',    width: 12}
-      - {click: n, label: 'N',  hint: 'iao',   width: 12}
-      - {click: m, label: 'M',  hint: 'ian',   width: 13}
+      - {click: z, label: 'ZX', hint: 'ou·ia', width: 13, __include: styl/key}
+      - {click: c, label: 'C',  hint: 'ao',    width: 12, __include: styl/key}
+      - {click: v, label: 'V',  hint: 'ui',    width: 12, __include: styl/key}
+      - {click: b, label: 'B',  hint: 'in',    width: 12, __include: styl/key}
+      - {click: n, label: 'N',  hint: 'iao',   width: 12, __include: styl/key}
+      - {click: m, label: 'M',  hint: 'ian',   width: 13, __include: styl/key}
       - {click: BackSpace, width: 13}
       # ---- 第 5 行：功能行 ----
-      - {click: Keyboard_flypy_en, width: 12}
-      - {click: Keyboard_symbols, long_click: Keyboard_number, width: 10}
-      - {click: Keyboard_flypy_17, width: 8}
-      - {click: Keyboard_flypy_18, width: 8}
-      - {click: Keyboard_flypy_24, width: 8}
-      - {click: space, swipe_up: Menu, width: 26}
-      - {click: ',', label: '，。', swipe_up: '.', width: 10}
-      - {click: Return, composing: Return1, width: 18}
+      - {click: Keyboard_flypy_en, width: 12, __include: styl/off_key}
+      - {click: Keyboard_symbols, long_click: Keyboard_number, width: 10, __include: styl/off_key}
+      - {click: space, swipe_up: Menu, width: 50, key_back_color: space_back_color, hilited_key_back_color: hilited_space_back_color}
+      - {click: ',', label: '，。', swipe_up: '.', width: 10, __include: styl/key}
+      - {click: Return, composing: Return1, width: 18, key_back_color: enter_back_color, hilited_key_back_color: hilited_enter_back_color, key_text_color: enter_text_color, hilited_key_text_color: enter_text_color}
 
   # ==========================================================================
-  # 3. 小鹤双拼 · 24 键 —— 只合并 OP、JK（3 行 9+8+7，最接近全键盘）
+  # 3. 小鹤双拼 · 24 键 —— 只合并 OP、JK（3 行 9+8+7，最接近全键盘）—— 对应方案 double_pinyin_flypy_24
   # ==========================================================================
-  "preset_keyboards/flypy_24":
+  "preset_keyboards/double_pinyin_flypy_24":
     name: "小鹤双拼·24键"
     author: "clover/forFudan 布局，Trime 移植"
     ascii_mode: 0
     reset_ascii_mode: true
     ascii_keyboard: flypy_en
     lock: true
+    __patch: conf/main
     width: 9
-    height: 44
     keys:
       # ---- 第 1 行：数字 ----
-      - {click: '1', label: '1', swipe_up: '!', height: 34}
-      - {click: '2', label: '2', swipe_up: '@'}
-      - {click: '3', label: '3', swipe_up: '#'}
-      - {click: '4', label: '4', swipe_up: '$'}
-      - {click: '5', label: '5', swipe_up: '%'}
-      - {click: '6', label: '6', swipe_up: '^'}
-      - {click: '7', label: '7', swipe_up: '&'}
-      - {click: '8', label: '8', swipe_up: '*'}
-      - {click: '9', label: '9', swipe_up: '('}
-      - {click: '0', label: '0', swipe_up: ')'}
-      - {click: Trime_transcription, width: 10}
+      - {click: '1', label: '1', swipe_up: '!', __include: styl/key}
+      - {click: '2', label: '2', swipe_up: '@', __include: styl/key}
+      - {click: '3', label: '3', swipe_up: '#', __include: styl/key}
+      - {click: '4', label: '4', swipe_up: '$', __include: styl/key}
+      - {click: '5', label: '5', swipe_up: '%', __include: styl/key}
+      - {click: '6', label: '6', swipe_up: '^', __include: styl/key}
+      - {click: '7', label: '7', swipe_up: '&', __include: styl/key}
+      - {click: '8', label: '8', swipe_up: '*', __include: styl/key}
+      - {click: '9', label: '9', swipe_up: '(', __include: styl/key}
+      - {click: '0', label: '0', swipe_up: ')', __include: styl/key}
+      - {click: Trime_transcription, width: 10, __include: styl/off_key}
       # ---- 第 2 行：Q W E R T Y U I OP ----
-      - {click: q, label: 'Q',  hint: 'iu',     width: 11}
-      - {click: w, label: 'W',  hint: 'ei',     width: 11}
-      - {click: e, label: 'E',  hint: 'e',      width: 11}
-      - {click: r, label: 'R',  hint: 'uan',    width: 11}
-      - {click: t, label: 'T',  hint: 'ue',     width: 11}
-      - {click: y, label: 'Y',  hint: 'un',     width: 11}
-      - {click: u, label: 'U',  hint: 'u',      width: 11}
-      - {click: i, label: 'I',  hint: 'i',      width: 11}
-      - {click: o, label: 'OP', hint: 'uo·ie',  width: 12}
+      - {click: q, label: 'Q',  hint: 'iu',     width: 11, __include: styl/key}
+      - {click: w, label: 'W',  hint: 'ei',     width: 11, __include: styl/key}
+      - {click: e, label: 'E',  hint: 'e',      width: 11, __include: styl/key}
+      - {click: r, label: 'R',  hint: 'uan',    width: 11, __include: styl/key}
+      - {click: t, label: 'T',  hint: 'ue',     width: 11, __include: styl/key}
+      - {click: y, label: 'Y',  hint: 'un',     width: 11, __include: styl/key}
+      - {click: u, label: 'U',  hint: 'u',      width: 11, __include: styl/key}
+      - {click: i, label: 'I',  hint: 'i',      width: 11, __include: styl/key}
+      - {click: o, label: 'OP', hint: 'uo·ie',  width: 12, __include: styl/key}
       # ---- 第 3 行：A S D F G H JK L ----
-      - {click: a, label: 'A',  hint: 'a',      width: 12}
-      - {click: s, label: 'S',  hint: 'ong',    width: 12}
-      - {click: d, label: 'D',  hint: 'ai',     width: 12}
-      - {click: f, label: 'F',  hint: 'en',     width: 12}
-      - {click: g, label: 'G',  hint: 'eng',    width: 13}
-      - {click: h, label: 'H',  hint: 'ang',    width: 13}
-      - {click: j, label: 'JK', hint: 'an·ing', width: 13}
-      - {click: l, label: 'L',  hint: 'iang',   width: 13}
+      - {click: a, label: 'A',  hint: 'a',      width: 12, __include: styl/key}
+      - {click: s, label: 'S',  hint: 'ong',    width: 12, __include: styl/key}
+      - {click: d, label: 'D',  hint: 'ai',     width: 12, __include: styl/key}
+      - {click: f, label: 'F',  hint: 'en',     width: 12, __include: styl/key}
+      - {click: g, label: 'G',  hint: 'eng',    width: 13, __include: styl/key}
+      - {click: h, label: 'H',  hint: 'ang',    width: 13, __include: styl/key}
+      - {click: j, label: 'JK', hint: 'an·ing', width: 13, __include: styl/key}
+      - {click: l, label: 'L',  hint: 'iang',   width: 13, __include: styl/key}
       # ---- 第 4 行：Shift Z X C V B N M BackSpace ----
       - {click: Shift_L, width: 12}
-      - {click: z, label: 'Z',  hint: 'ou',  width: 11}
-      - {click: x, label: 'X',  hint: 'ia',  width: 11}
-      - {click: c, label: 'C',  hint: 'ao',  width: 11}
-      - {click: v, label: 'V',  hint: 'ui',  width: 11}
-      - {click: b, label: 'B',  hint: 'in',  width: 11}
-      - {click: n, label: 'N',  hint: 'iao', width: 11}
-      - {click: m, label: 'M',  hint: 'ian', width: 11}
+      - {click: z, label: 'Z',  hint: 'ou',  width: 11, __include: styl/key}
+      - {click: x, label: 'X',  hint: 'ia',  width: 11, __include: styl/key}
+      - {click: c, label: 'C',  hint: 'ao',  width: 11, __include: styl/key}
+      - {click: v, label: 'V',  hint: 'ui',  width: 11, __include: styl/key}
+      - {click: b, label: 'B',  hint: 'in',  width: 11, __include: styl/key}
+      - {click: n, label: 'N',  hint: 'iao', width: 11, __include: styl/key}
+      - {click: m, label: 'M',  hint: 'ian', width: 11, __include: styl/key}
       - {click: BackSpace, width: 11}
       # ---- 第 5 行：功能行 ----
-      - {click: Keyboard_flypy_en, width: 12}
-      - {click: Keyboard_symbols, long_click: Keyboard_number, width: 10}
-      - {click: Keyboard_flypy_17, width: 8}
-      - {click: Keyboard_flypy_18, width: 8}
-      - {click: Keyboard_flypy_24, width: 8}
-      - {click: space, swipe_up: Menu, width: 26}
-      - {click: ',', label: '，。', swipe_up: '.', width: 10}
-      - {click: Return, composing: Return1, width: 18}
+      - {click: Keyboard_flypy_en, width: 12, __include: styl/off_key}
+      - {click: Keyboard_symbols, long_click: Keyboard_number, width: 10, __include: styl/off_key}
+      - {click: space, swipe_up: Menu, width: 50, key_back_color: space_back_color, hilited_key_back_color: hilited_space_back_color}
+      - {click: ',', label: '，。', swipe_up: '.', width: 10, __include: styl/key}
+      - {click: Return, composing: Return1, width: 18, key_back_color: enter_back_color, hilited_key_back_color: hilited_enter_back_color, key_text_color: enter_text_color, hilited_key_text_color: enter_text_color}
 
   # ==========================================================================
   # 4. 英文 26 键 —— 共键键盘在英文/ASCII 模式下使用（中文键盘上的「英」键进入）
@@ -208,62 +199,50 @@ patch:
     ascii_mode: 1
     reset_ascii_mode: true
     lock: true
+    __patch: conf/main
     width: 10
-    height: 44
     keys:
-      - {click: q, label: 'Q', long_click: '1'}
-      - {click: w, label: 'W', long_click: '2'}
-      - {click: e, label: 'E', long_click: '3'}
-      - {click: r, label: 'R', long_click: '4'}
-      - {click: t, label: 'T', long_click: '5'}
-      - {click: y, label: 'Y', long_click: '6'}
-      - {click: u, label: 'U', long_click: '7'}
-      - {click: i, label: 'I', long_click: '8'}
-      - {click: o, label: 'O', long_click: '9'}
-      - {click: p, label: 'P', long_click: '0'}
+      - {click: q, label: 'Q', long_click: '1', __include: styl/key}
+      - {click: w, label: 'W', long_click: '2', __include: styl/key}
+      - {click: e, label: 'E', long_click: '3', __include: styl/key}
+      - {click: r, label: 'R', long_click: '4', __include: styl/key}
+      - {click: t, label: 'T', long_click: '5', __include: styl/key}
+      - {click: y, label: 'Y', long_click: '6', __include: styl/key}
+      - {click: u, label: 'U', long_click: '7', __include: styl/key}
+      - {click: i, label: 'I', long_click: '8', __include: styl/key}
+      - {click: o, label: 'O', long_click: '9', __include: styl/key}
+      - {click: p, label: 'P', long_click: '0', __include: styl/key}
       - {width: 5}
-      - {click: a, label: 'A', long_click: select_all, swipe_left: Left, swipe_right: Right}
-      - {click: s, label: 'S', long_click: '~', swipe_up: Page_Up, swipe_down: Page_Down}
-      - {click: d, label: 'D', long_click: '-', swipe_down: '_'}
-      - {click: f, label: 'F', long_click: '+', swipe_down: '='}
-      - {click: g, label: 'G', long_click: '\', swipe_down: '|'}
-      - {click: h, label: 'H', long_click: '[]{Left}', swipe_left: '[', swipe_right: ']'}
-      - {click: j, label: 'J', long_click: '{}{Left}', swipe_left: '{', swipe_right: '}'}
-      - {click: k, label: 'K', long_click: ':'}
-      - {click: l, label: 'L', long_click: ';'}
+      - {click: a, label: 'A', long_click: select_all, swipe_left: Left, swipe_right: Right, __include: styl/key}
+      - {click: s, label: 'S', long_click: '~', swipe_up: Page_Up, swipe_down: Page_Down, __include: styl/key}
+      - {click: d, label: 'D', long_click: '-', swipe_down: '_', __include: styl/key}
+      - {click: f, label: 'F', long_click: '+', swipe_down: '=', __include: styl/key}
+      - {click: g, label: 'G', long_click: '\', swipe_down: '|', __include: styl/key}
+      - {click: h, label: 'H', long_click: '[]{Left}', swipe_left: '[', swipe_right: ']', __include: styl/key}
+      - {click: j, label: 'J', long_click: '{}{Left}', swipe_left: '{', swipe_right: '}', __include: styl/key}
+      - {click: k, label: 'K', long_click: ':', __include: styl/key}
+      - {click: l, label: 'L', long_click: ';', __include: styl/key}
       - {width: 5}
       - {click: Shift_L, send_bindings: false, width: 15}
-      - {click: z, label: 'Z', long_click: '`'}
-      - {click: x, label: 'X', long_click: cut}
-      - {click: c, label: 'C', long_click: copy}
-      - {click: v, label: 'V', long_click: paste}
-      - {click: b, label: 'B'}
-      - {click: n, label: 'N', long_click: '"'}
-      - {click: m, label: 'M', long_click: "'"}
+      - {click: z, label: 'Z', long_click: '`', __include: styl/key}
+      - {click: x, label: 'X', long_click: cut, __include: styl/key}
+      - {click: c, label: 'C', long_click: copy, __include: styl/key}
+      - {click: v, label: 'V', long_click: paste, __include: styl/key}
+      - {click: b, label: 'B', __include: styl/key}
+      - {click: n, label: 'N', long_click: '"', __include: styl/key}
+      - {click: m, label: 'M', long_click: "'", __include: styl/key}
       - {click: BackSpace, swipe_left: Escape, width: 15}
-      - {click: Keyboard_flypy_zh, width: 12}                                  # 英 → 中（回到本方案的默认中文键盘）
-      - {click: Keyboard_symbols, long_click: Keyboard_number, width: 10}
-      - {click: space, width: 38}
-      - {click: ',', label: ',', swipe_up: ';', width: 10}
+      - {click: Keyboard_flypy_zh, width: 12, __include: styl/off_key}                                  # 英 → 中（回到本方案的默认中文键盘）
+      - {click: Keyboard_symbols, long_click: Keyboard_number, width: 10, __include: styl/off_key}
+      - {click: space, width: 38, key_back_color: space_back_color, hilited_key_back_color: hilited_space_back_color}
+      - {click: ',', label: ',', swipe_up: ';', width: 10, __include: styl/key}
       - {click: '.', label: '.', swipe_up: '?', width: 10}
-      - {click: Return, composing: Return1, width: 20}
+      - {click: Return, composing: Return1, width: 20, key_back_color: enter_back_color, hilited_key_back_color: hilited_enter_back_color, key_text_color: enter_text_color, hilited_key_text_color: enter_text_color}
 
   # ==========================================================================
   # 5. 键盘切换按键（在 keys[] 里用名字引用）
   #    send: Eisu_toggle 是 Trime 约定的「切换键盘」信号
   # ==========================================================================
-  "preset_keys/Keyboard_flypy_17":
-    label: "17"
-    send: Eisu_toggle
-    select: double_pinyin_flypy
-  "preset_keys/Keyboard_flypy_18":
-    label: "18"
-    send: Eisu_toggle
-    select: flypy_18
-  "preset_keys/Keyboard_flypy_24":
-    label: "24"
-    send: Eisu_toggle
-    select: flypy_24
   "preset_keys/Keyboard_flypy_en":
     label: "英"
     send: Eisu_toggle
@@ -271,7 +250,7 @@ patch:
   "preset_keys/Keyboard_flypy_zh":
     label: "中"
     send: Eisu_toggle
-    select: .default      # .default = 让 Trime 按当前方案重新匹配（小鹤双拼 → 17 键）
+    select: .default      # .default = 让 Trime 按当前方案重新匹配（17/18/24 → 同名中文键盘）
   # 薄荷的简繁开关名是 transcription（见 double_pinyin_flypy.schema.yaml）
   "preset_keys/Trime_transcription":
     label: "简"

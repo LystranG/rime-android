@@ -1,0 +1,25 @@
+# double_pinyin_flypy_18.schema.yaml —— 小鹤双拼·18键（布局别名方案）
+# encoding: utf-8
+#
+# 作用：把「小鹤双拼」按键盘布局拆成三个方案（17 / 18 / 24 键），布局切换 = 切方案。
+#
+# 原理：
+#   1. `__include: double_pinyin_flypy:/` 整份引用基础方案（oh-my-rime 的 double_pinyin_flypy），
+#      引擎、词典、拼写运算一个不少；
+#   2. `__patch: double_pinyin_flypy.custom:/patch` 原样引用基础方案的补丁 —— 候选数、
+#      万象模型设置、共键 derive 规则都在那个文件里。⚠️ 别名方案必须显式引用它，
+#      否则 derive 缺失，17/18/24 键的合并键（QW/ER/…）打不出被合并的音节；
+#   3. 覆盖 schema_id / name：Trime 的 smartMatchKeyboard 按「键盘 ID == 方案 ID」
+#      自动套用 trime.custom.yaml 里同名键盘（double_pinyin_flypy_18）。
+#
+# 三个别名共用同一份 translator/dictionary → 共享同一个 .userdb 用户词典，
+# 在 17/18/24 键之间切换不会丢词频学习。
+#
+# 部署后：长按空格（或候选栏菜单）打开方案菜单，选「小鹤双拼·17键 / 18键 / 24键」。
+
+__include: double_pinyin_flypy:/
+__patch: double_pinyin_flypy.custom:/patch
+
+schema:
+  schema_id: double_pinyin_flypy_18
+  name: 小鹤双拼·18键

@@ -11,8 +11,9 @@
 | `default.custom.yaml` | 全局补丁：方案列表（小鹤双拼 + 薄荷全拼）、外接键盘中英切换行为 |
 | `double_pinyin_flypy.custom.yaml` | 小鹤双拼：候选个数、万象模型设置、**共键（17/18/24 键）拼写扩展 derive 规则** |
 | `rime_mint.custom.yaml` | 薄荷全拼：候选个数、万象模型设置（全拼不使用共键，自动用 26 键） |
+| `double_pinyin_flypy_17/18/24.schema.yaml` | 小鹤双拼的三个「方案别名」：整份 `__include` 基础方案 + 引用 `double_pinyin_flypy.custom.yaml` 的补丁，只改 `schema_id`/名字。**布局切换 = 切方案**（17/18/24 键），三个别名共享同一份词典与用户词库 |
 | `wanxiang.yaml` | 万象模型的 `grammar` / `translator` 调参片段。**目前只被全拼 `rime_mint.custom.yaml` 用 `__include` 引用**；小鹤双拼因为要与 `speller/algebra/+` 共存，已改为在 `double_pinyin_flypy.custom.yaml` 里**内联**（原因见第四节，重要）|
-| `trime.custom.yaml` | **Trime 前端主题补丁**：17 / 18 / 24 键中文键盘 + 英文 26 键键盘 + 键盘切换按键 + 界面微调 |
+| `trime.custom.yaml` | **Trime 前端主题补丁**：17 / 18 / 24 键中文键盘 + 英文 26 键键盘 + 界面微调（布局切换走方案菜单，键盘上不放切换键） |
 | `installation.yaml` | 安装信息：`installation_id: android`，`sync_dir: "sync"`（= Trime 用户目录/sync） |
 | `mint.trime.yaml` | 薄荷主题源文件。⚠️ **本仓库这份已补入上游漏掉的 `styl`/`conf` 定义，不要用上游原版直接覆盖**（否则 librime 编译失败、主题静默回退，见第八节）|
 | `<主题>.trime.yaml` | 单静 / 单静+ / 单静·樱桃 / 单纯 / 单纯+ 各自的主题源文件（上游原样）|
@@ -35,7 +36,7 @@ Trime 新版的官方描述是：**「每次部署或同步用户数据前，从
 1. **准备外部目录**：用手机存储根部的 `/storage/emulated/0/rime`（即 Trime 老版本的默认用户目录）。
 2. **把文件全部放进这个目录的根部**（⚠️ 不要多套一层文件夹）：
    * oh-my-rime（薄荷）仓库的全部文件（`dicts/`、`lua/`、`*.schema.yaml` …）；
-   * 本目录的文件（覆盖同名项）：`default.custom.yaml`、`double_pinyin_flypy.custom.yaml`、`rime_mint.custom.yaml`、`wanxiang.yaml`、`trime.custom.yaml`、`installation.yaml`；
+   * 本目录的文件（覆盖同名项）：`default.custom.yaml`、`double_pinyin_flypy.custom.yaml`、`double_pinyin_flypy_17/18/24.schema.yaml`（三个方案别名，**必须带上**，否则方案菜单里没有 17/18/24 键）、`rime_mint.custom.yaml`、`wanxiang.yaml`、`trime.custom.yaml`、`installation.yaml`；
    * `wanxiang-lts-zh-hans.gram`（约 400MB，建议直接从 mac 拷，见第五节）。
    * 用 `git clone` 拉仓库的话会带 `.git/`、`.github/` 等无关文件：无害，但会被一起导入内部存储，介意就只拷需要的文件。
 3. **在 Trime 里设置**：设置 → 数据存储模式 → **从外部存储同步** → 选中上面那个文件夹（会弹系统文件夹选择器）。
@@ -68,7 +69,7 @@ Trime 新版的官方描述是：**「每次部署或同步用户数据前，从
 QW   ER   TY   U    I    OP
 AS   DF   G    H    JK   L
 Shift ZX  C    V    BN   M    ⌫
-英   符   17   18   24   空格    ，。    ⏎
+英   符   空格        ，。    ⏎
 ```
 合并：`q←w`、`e←r`、`t←y`、`o←p`、`a←s`、`d←f`、`j←k`、`z←x`、`b←n`（四叶草全部 9 组）
 
@@ -78,7 +79,7 @@ Shift ZX  C    V    BN   M    ⌫
 QW   ER   TY   U    I    OP
 AS   DF   G    H    JK   L
 Shift ZX  C    V    B    N    M    ⌫
-英   符   17   18   24   空格    ，。    ⏎
+英   符   空格        ，。    ⏎
 ```
 合并：17 键的 9 组里拆开 `b/n`，只保留 8 组（3 行 6+6+6，最整齐）
 
@@ -88,17 +89,16 @@ Shift ZX  C    V    B    N    M    ⌫
 Q    W    E    R    T    Y    U    I    OP
 A    S    D    F    G    H    JK   L
 Shift Z X   C    V    B    N    M    ⌫
-英   符   17   18   24   空格    ，。    ⏎
+英   符   空格        ，。    ⏎
 ```
 合并：只保留 `o←p`、`j←k` 两组（3 行 9+8+7，最接近全键盘，重码最少）
 
 ### 键盘上的功能键
 | 键 | 功能 |
 | --- | --- |
-| `17` / `18` / `24` | 直接切换到对应布局（**默认是 17 键**） |
 | `英` | 切到英文 26 键键盘（`flypy_en`）；英文键盘上的 `中` 键切回中文 |
 | `符` | 符号键盘；**长按** = 数字键盘 |
-| `空格` | 长按/上滑 = 方案菜单（也可在候选栏菜单里操作） |
+| `空格` | 长按/上滑 = 方案菜单（也可在候选栏菜单里操作）；**17 / 18 / 24 键布局就在方案菜单里切换**（见下） |
 | `简` | 简繁切换（薄荷的 `transcription` 开关） |
 | 数字键上滑 | `!@#$%^&*()` |
 | `，。` | 点按 `，`，上滑 `。` |
@@ -106,15 +106,35 @@ Shift Z X   C    V    B    N    M    ⌫
 > 应用强制英文（如密码框）时，Trime 会按 `ascii_keyboard: flypy_en` 自动跳到英文 26 键，
 > 不会因为共键键盘少字母而打不出英文。
 
-### 17/18/24 键与默认方案绑定
-Trime 的规则是：**键盘 ID 与方案 `schema_id` 同名时自动套用**（`KeyboardWindow.smartMatchKeyboard`）。
-所以 `trime.custom.yaml` 里把 17 键布局直接命名为 `double_pinyin_flypy` ——
-「小鹤双拼-薄荷定制」默认就是 17 键；薄荷全拼（`rime_mint`）的 alphabet 是 26 个字母，
-会自动套用内置 `qwerty`（26 键）。
+### 17/18/24 键布局 = 三个方案别名（布局切换走方案菜单）
 
-想换默认布局（例如默认 18 键），把 `trime.custom.yaml` 里
-`"preset_keyboards/double_pinyin_flypy"` 的内容换成 `import_preset: flypy_18` 即可
-（或把 `flypy_18` 的 `keys` 整段复制过去）。
+键盘上**不再放 17/18/24 切换键**（太挤也不好看）。三种布局各自对应一个「方案别名」：
+
+| 方案（菜单里显示的名字） | schema_id | 键盘 ID（trime.custom.yaml） |
+| --- | --- | --- |
+| 小鹤双拼·17键（默认） | `double_pinyin_flypy_17` | `double_pinyin_flypy_17` |
+| 小鹤双拼·18键 | `double_pinyin_flypy_18` | `double_pinyin_flypy_18` |
+| 小鹤双拼·24键 | `double_pinyin_flypy_24` | `double_pinyin_flypy_24` |
+
+别名文件（`double_pinyin_flypy_17/18/24.schema.yaml`）的写法：
+
+```yaml
+__include: double_pinyin_flypy:/              # 整份引用基础方案（oh-my-rime 提供）
+__patch: double_pinyin_flypy.custom:/patch    # 引用基础方案的全部补丁（derive/候选数/万象）
+schema:
+  schema_id: double_pinyin_flypy_17           # 只覆盖 ID 和名字
+  name: 小鹤双拼·17键
+```
+
+Trime 的规则是：**键盘 ID 与方案 `schema_id` 同名时自动套用**（`KeyboardWindow.smartMatchKeyboard`），
+所以在方案菜单（长按空格上滑）里选「小鹤双拼·17键 / 18键 / 24键」，键盘就会一起切过去。
+三个别名整份引用同一基础方案 → **共享同一份词典和 `.userdb` 用户词库**，切换布局不丢词频学习；
+薄荷全拼（`rime_mint`）的 alphabet 是 26 个字母，自动套用内置 `qwerty`（26 键）。
+
+⚠️ 别名里**必须** `__patch` 引用 `double_pinyin_flypy.custom.yaml`：共键 derive 规则、候选数、
+万象模型设置都在那个文件里，省略的话合并键（QW/ER/…）打不出被合并的音节。
+
+想改默认布局：调整 `default.custom.yaml` 里 `schema_list` 的顺序即可（第一个是默认方案）。
 
 ### 小鹤双拼韵母助记（键盘上 hint 显示的内容）
 | 键 | 韵母 | 键 | 韵母 | 键 | 韵母 |
@@ -403,11 +423,33 @@ patch:
    所以：改完主题文件必须先【部署】（整树导入 + 编译）再选主题，否则 4 个单静系主题会**一起**编译失败 → 看起来「全都失效」。
    实测：内部目录里挑掉 `danjing.yaml`，`单静.trime` 必定 `error building config` 且没有产物。
 
+### ⚠️ 补丁键盘必须套「主题原生样式」（2026-09 已修）
+
+最早生成的主题补丁直接把 `trime.custom.yaml` 的键盘原样搬进去。这些键盘是给内置 trime 主题用的
+「裸键」（按键不带任何样式引用），放进单静 / mint 后回退到配色里的 `key_back_color` **纯色**：
+
+* 和官方单静长得不一样 —— 官方每个字母键都写 `__include: styl/key`（背景 = 当前配色的
+  `main_back_color` → 圆角图片 `key.png`），还套 `conf/main`（52px 键高、间距、底部留白）；
+  裸键什么都没有，又平又方。
+* 换主题没变化 —— 单静谷歌白配色的 `key_back_color` 是 `0xFFFFFF`，mint 浅色配色是
+  `0xFBFBFC`（mint 本来就是抄单静的配色），两个纯色肉眼无差别 → 「mint 和单静一模一样」。
+
+修法：`tools/gen-theme-patches.py` 现在会按主题官方键盘的写法改写后再生成：
+
+* 键盘级 `__patch: conf/main`（高度/间距/底部留白跟主题走，补丁自带的 `height` 删掉）；
+* 字母/数字/标点键 `__include: styl/key`；简/英/符等功能键 `__include: styl/off_key`；
+* 空格 → `space_back_color`（space.png）、回车 → `enter_back_color`（enter.png）；
+* Shift / 退格保持裸键 —— Trime 对功能键自动用 off_key 背景，与官方行为一致。
+
+官方单静本身就是这个机制：它按方案绑定布局用 `preset_keyboards/<方案id>: import_preset`
+（内置布局模板 26/27/30 键，见其 README FAQ），没有现成 17 键模板；我们的 17/18/24 键
+布局沿用同一绑定约定，只是模板自己写。
+
 ### 与 17/18/24 键键盘的兼容性
 
-* **不冲突**：两套主题只定义自己的 `preset_keyboards`（`default`/`letter`/`number`/`qwerty_`/`qwertys` 等），没有和我们的 `double_pinyin_flypy` / `flypy_18` / `flypy_24` / `flypy_en` 重名。
+* **不冲突**：两套主题只定义自己的 `preset_keyboards`（`default`/`letter`/`number`/`qwerty_`/`qwertys` 等），没有和我们的 `double_pinyin_flypy_17` / `double_pinyin_flypy_18` / `double_pinyin_flypy_24` / `flypy_en` 重名。
 * 唯一缺的是预设键 `Return1`（我们键盘的 `composing: Return1` 用到）——已在生成的主题补丁里补上。
-* ⚠️ **关键规则**：`trime.custom.yaml` 只作用于**内置主题 `trime`**。Trime 的补丁规则是「主题资源 ID + `.custom.yaml`」，所以在设置里换成 mint / 单静后，**必须用同名补丁文件**，否则 17/18/24 键键盘与中英切换键会消失（主题会按自己的 `qwerty_` 显示）。本目录已生成好 6 个（内容 = 三套键盘 + 切换键 + `Return1`；style 微调已注释，保留主题自己的 style）：
+* ⚠️ **关键规则**：`trime.custom.yaml` 只作用于**内置主题 `trime`**。Trime 的补丁规则是「主题资源 ID + `.custom.yaml`」，所以在设置里换成 mint / 单静后，**必须用同名补丁文件**，否则 17/18/24 键键盘与中英切换键会消失（主题会按自己的 `qwerty_` 显示）。本目录已生成好 6 个（内容 = 三套键盘 + 中英切换键 + `Return1`；style 微调已注释，保留主题自己的 style）：
 
 ```text
 mint.trime.custom.yaml              单静.trime.custom.yaml
@@ -421,7 +463,7 @@ mint.trime.custom.yaml              单静.trime.custom.yaml
 2. 【部署】；
 3. 设置 → 主题 → 选择 `mint` 或 `单静`（列表名来自主题的 `name` 字段）；
 4. 设置 → 主题 → **配色** 里挑配色；打开「**跟随系统夜间模式**」即可日夜自动切换（详见下一小节）；
-5. 键盘上的 `17 / 18 / 24 / 英` 切换键照旧可用。
+5. 17 / 18 / 24 键布局在**方案菜单**（长按空格上滑）里切换：选「小鹤双拼·17键 / 18键 / 24键」，键盘自动跟着换。
 
 ### 明暗自动切换（已显式配好 Google 配色，但需在设置里开一次开关）
 
@@ -502,6 +544,8 @@ preset_color_schemes/<当前配色>/dark_scheme:  <夜间用哪个配色>
    可改用内置 `Mode_switch` 键（把键盘第 5 行的 `Keyboard_flypy_en` 换成 `Mode_switch`）。
 5. `style/keyboards` 列表在 Trime 3.3.x 已不再解析，所以本配置用「显式 select 的切换键」而不是
    `.next` 轮换（`.next` 会在含注音/仓颉等内置键盘的全量列表里乱跳）。
+   17/18/24 键布局不再放切换键，改由三个方案别名（`double_pinyin_flypy_17/18/24`）承担 ——
+   布局切换 = 切方案（长按空格上滑打开方案菜单）。
 6. 未在真机上验证的部分：`installation.yaml` 的字段补全、`ascii_keyboard` 在各 Trime 版本的表现、
    共键键盘在你的具体机型上的手感 —— 部署后请按下面清单验证。
 
@@ -518,11 +562,12 @@ preset_color_schemes/<当前配色>/dark_scheme:  <夜间用哪个配色>
 > | 17 键：`BN` `I` `H` `C` | ni hc | 你好 你 |
 
 1. 候选栏出现候选，输入 `nihao`（小鹤：`ni` = `ni`，`hao` = `hc` → 打 `nihc`）能得到「你好」。
-2. 按 `17 / 18 / 24` 键能切换布局，键盘外观随之变化（17 键应看到 QW ER TY…）。
+2. 在方案菜单（长按空格上滑）里能看到「小鹤双拼·17键 / 18键 / 24键」，逐个选择后键盘外观随之变化
+   （17 键应看到 QW ER TY…；布局跟随方案自动切换 = smartMatchKeyboard 生效）。
 3. 17 键下按 `L` + `QW`键 → 出现「刘 / 累」等候选（说明 derive 生效）。
 4. 24 键下按 `W` 只出现 ei 类候选（`R/Y/S/F/X/N` 同理各自唯一）；
    按 `OP` 键（发 o）会同时出现 uo/o 与 ie 两类候选，按 `JK` 键（发 j）会同时出现 an 与 ing/uai 两类 —— 这是共键的预期行为。
-5. 按 `英` 进入英文 26 键，能正常输入英文；按 `中` 回到小鹤 17 键且为中文状态。
+5. 按 `英` 进入英文 26 键，能正常输入英文；按 `中` 回到当前方案的中文键盘（17/18/24 同名键盘）且为中文状态。
 6. 在密码框等强制英文的输入框里，键盘自动变成 26 键英文键盘。
 7. 【同步用户数据】后，检查 `sync/android/` 下是否生成 `*.userdb.txt`。
 8. 简繁切换（`简` 键）能生效。

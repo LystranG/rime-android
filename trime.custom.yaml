@@ -13,10 +13,11 @@
 # 布局与方案的绑定（Trime 源码 KeyboardWindow.smartMatchKeyboard）：
 #   ① 键盘 ID == 方案 schema_id  → 切到该方案时自动使用该键盘（最高优先级）
 #   ② 否则按 speller/alphabet 匹配（26 个字母 → 内置 qwerty 26 键）
-#   所以这里把 17 键布局直接命名为 double_pinyin_flypy（小鹤双拼的方案 ID），
-#   这样「小鹤双拼-薄荷定制」默认就是 17 键；薄荷全拼(rime_mint)会自动用内置 26 键。
-#   想换默认布局：把下面的 "preset_keyboards/double_pinyin_flypy" 换成
-#   import_preset: flypy_18 / flypy_24，或直接把 18/24 键的 keys 复制过去。
+#   三个布局各自对应一个「方案别名」（double_pinyin_flypy_17 / _18 / _24，见同名
+#   .schema.yaml：__include 基础方案 + 引用 double_pinyin_flypy.custom.yaml 的补丁，
+#   词典/derive 规则完全共享），键盘 ID 与之同名 → 在方案菜单（长按空格上滑）里
+#   选「小鹤双拼·17键 / 18键 / 24键」即可连键盘一起切过去；键盘上不再放切换键。
+#   薄荷全拼(rime_mint) 字母表是 26 个，自动用内置 qwerty。
 #
 # 共键原理（重要）：
 #   17/18/24 键键盘一个键只发一个字母（四叶草做法），被合并掉的两个字母靠
@@ -32,10 +33,10 @@
 
 patch:
   # ==========================================================================
-  # 1. 小鹤双拼 · 17 键（四叶草/宇宙十七键）—— 小鹤双拼方案的默认键盘
+  # 1. 小鹤双拼 · 17 键（四叶草/宇宙十七键）—— 对应方案 double_pinyin_flypy_17（默认布局）
   #    字母键 17 个，3 行 6+6+5；数字行 / 功能行参考 cosmic17key 的排版
   # ==========================================================================
-  "preset_keyboards/double_pinyin_flypy":
+  "preset_keyboards/double_pinyin_flypy_17":
     name: "小鹤双拼·17键（四叶草）"
     author: "clover/forFudan 布局，Trime 移植"
     ascii_mode: 0            # 进入时默认中文
@@ -81,18 +82,15 @@ patch:
       - {click: BackSpace, width: 8}
       # ---- 第 5 行：功能行 ----
       - {click: Keyboard_flypy_en, width: 12}                                  # 中 → 英
-      - {click: Keyboard_symbols, long_click: Keyboard_number, width: 10}     # 符号 / 长按数字键盘
-      - {click: Keyboard_flypy_17, width: 8}                                   # 切到 17 键
-      - {click: Keyboard_flypy_18, width: 8}                                   # 切到 18 键
-      - {click: Keyboard_flypy_24, width: 8}                                   # 切到 24 键
-      - {click: space, swipe_up: Menu, width: 26}                              # 空格 / 上滑方案菜单
+      - {click: Keyboard_symbols, long_click: Keyboard_number, width: 10}     # 符号 / 长按数字键盘（17/18/24 在方案菜单切换）
+      - {click: space, swipe_up: Menu, width: 50}                              # 空格 / 上滑方案菜单（选 17/18/24 键布局）
       - {click: ',', label: '，。', swipe_up: '.', width: 10}
       - {click: Return, composing: Return1, width: 18}
 
   # ==========================================================================
-  # 2. 小鹤双拼 · 18 键 —— 17 键基础上把 BN 拆成 B / N（3 行 6+6+6）
+  # 2. 小鹤双拼 · 18 键 —— 17 键基础上把 BN 拆成 B / N（3 行 6+6+6）—— 对应方案 double_pinyin_flypy_18
   # ==========================================================================
-  "preset_keyboards/flypy_18":
+  "preset_keyboards/double_pinyin_flypy_18":
     name: "小鹤双拼·18键"
     author: "clover/forFudan 布局，Trime 移植"
     ascii_mode: 0
@@ -140,17 +138,14 @@ patch:
       # ---- 第 5 行：功能行 ----
       - {click: Keyboard_flypy_en, width: 12}
       - {click: Keyboard_symbols, long_click: Keyboard_number, width: 10}
-      - {click: Keyboard_flypy_17, width: 8}
-      - {click: Keyboard_flypy_18, width: 8}
-      - {click: Keyboard_flypy_24, width: 8}
-      - {click: space, swipe_up: Menu, width: 26}
+      - {click: space, swipe_up: Menu, width: 50}
       - {click: ',', label: '，。', swipe_up: '.', width: 10}
       - {click: Return, composing: Return1, width: 18}
 
   # ==========================================================================
-  # 3. 小鹤双拼 · 24 键 —— 只合并 OP、JK（3 行 9+8+7，最接近全键盘）
+  # 3. 小鹤双拼 · 24 键 —— 只合并 OP、JK（3 行 9+8+7，最接近全键盘）—— 对应方案 double_pinyin_flypy_24
   # ==========================================================================
-  "preset_keyboards/flypy_24":
+  "preset_keyboards/double_pinyin_flypy_24":
     name: "小鹤双拼·24键"
     author: "clover/forFudan 布局，Trime 移植"
     ascii_mode: 0
@@ -204,10 +199,7 @@ patch:
       # ---- 第 5 行：功能行 ----
       - {click: Keyboard_flypy_en, width: 12}
       - {click: Keyboard_symbols, long_click: Keyboard_number, width: 10}
-      - {click: Keyboard_flypy_17, width: 8}
-      - {click: Keyboard_flypy_18, width: 8}
-      - {click: Keyboard_flypy_24, width: 8}
-      - {click: space, swipe_up: Menu, width: 26}
+      - {click: space, swipe_up: Menu, width: 50}
       - {click: ',', label: '，。', swipe_up: '.', width: 10}
       - {click: Return, composing: Return1, width: 18}
 
@@ -264,18 +256,6 @@ patch:
   # 5. 键盘切换按键（在 keys[] 里用名字引用）
   #    send: Eisu_toggle 是 Trime 约定的「切换键盘」信号
   # ==========================================================================
-  "preset_keys/Keyboard_flypy_17":
-    label: "17"
-    send: Eisu_toggle
-    select: double_pinyin_flypy
-  "preset_keys/Keyboard_flypy_18":
-    label: "18"
-    send: Eisu_toggle
-    select: flypy_18
-  "preset_keys/Keyboard_flypy_24":
-    label: "24"
-    send: Eisu_toggle
-    select: flypy_24
   "preset_keys/Keyboard_flypy_en":
     label: "英"
     send: Eisu_toggle
@@ -283,7 +263,7 @@ patch:
   "preset_keys/Keyboard_flypy_zh":
     label: "中"
     send: Eisu_toggle
-    select: .default      # .default = 让 Trime 按当前方案重新匹配（小鹤双拼 → 17 键）
+    select: .default      # .default = 让 Trime 按当前方案重新匹配（17/18/24 → 同名中文键盘）
   # 薄荷的简繁开关名是 transcription（见 double_pinyin_flypy.schema.yaml）
   "preset_keys/Trime_transcription":
     label: "简"

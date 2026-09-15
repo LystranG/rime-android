@@ -9,6 +9,9 @@ Trime 的主题补丁规则是「主题资源 ID + .custom.yaml」，而 `trime.
 
 本脚本以 `trime.custom.yaml` 为准（单一数据源），为每个主题生成一份补丁，内容包含：
   * 小鹤双拼 17/18/24 键键盘 + 英文 26 键键盘 + 切换键（`Trime_transcription` 等）
+  * 「主题原生样式」改写（见 themed_body）：键盘套 conf/main + styl/key 等主题自带样式。
+    不注入的话裸键回退到配色 key_back_color 纯色 —— 单静谷歌白(0xFFFFFF) 与 mint
+    浅色(0xFBFBFC) 数值几乎一样，这就是「换主题后键盘长得一模一样」的原因。
   * `preset_keys/Return1`（mint / 单静 主题缺少这个预设键）
   * 明暗配对（`light_scheme` / `dark_scheme`）：
       单静系 → 日间「谷歌白」/ 夜间「谷歌黑」（并把 default 也指向这对，选默认也能自动切换）
@@ -107,6 +110,72 @@ def load_patch_body():
     return body
 
 
+def _inject(line, extra):
+    """把 extra 插到行内最后一个 } 之前（保留行尾注释）；幂等：已带 __include 不处理。"""
+    if "__include" in line:
+        return line
+    i = line.rfind("}")
+    return line[:i] + extra + line[i:]
+
+
+def _styler(style_name):
+    """生成一个行级替换函数：给按键补 __include: styl/<name>。"""
+    def _r(m):
+        return _inject(m.group(0), f", __include: styl/{style_name}")
+    return _r
+
+
+def _spacer(m):
+    """空格键：套主题的 space.png 背景（space_back_color 配色别名）。"""
+    return _inject(m.group(0),
+                   ", key_back_color: space_back_color"
+                   ", hilited_key_back_color: hilited_space_back_color")
+
+
+def _runner(m):
+    """回车键：套主题的 enter.png 背景/文字配色。"""
+    return _inject(m.group(0),
+                   ", key_back_color: enter_back_color"
+                   ", hilited_key_back_color: hilited_enter_back_color"
+                   ", key_text_color: enter_text_color"
+                   ", hilited_key_text_color: enter_text_color")
+
+
+def themed_body(body):
+    """把补丁里的键盘改写成「主题原生样式」版（单静 / mint 系主题通用）。
+
+    背景：trime.custom.yaml 里的键盘是给内置 trime 主题用的「裸键」——不带任何样式
+    引用。放进单静 / mint 这类主题后，裸键回退到配色里的 key_back_color 纯色，既丢
+    了主题的圆角图片按键，又因为各家配色数值接近而看起来一个样。这里照主题官方键盘
+    的写法（单静 default / mint 主键盘）补上样式：
+      * 键盘级 __patch: conf/main   → 主题主键盘的高度(52)/水平垂直间距/底部留白
+      * 字母/数字/标点键 styl/key   → 圆角图片按键（配色 main_back_color → key.png）
+      * 简/英/符 等功能键 styl/off_key
+      * 空格 → space_back_color(space.png)；回车 → enter_back_color(enter.png)
+      * Shift / BackSpace 保持裸键：Trime 对功能键自动用 off_key 背景，与官方一致
+    同时去掉补丁自带的 height（键盘级 44 / 数字行 34），行高交给主题 conf 控制。
+    """
+    # 1) 行高交给主题 conf/main
+    body = re.sub(r"(?m)^    height: 44[^\n]*\n", "", body)   # 键盘级默认行高
+    body = body.replace(", height: 34}", "}")                    # 数字行矮键
+
+    # 2) 键盘级套用主题的 conf/main（插在 lock: true 那行之后）
+    body = re.sub(r"(?m)^(    lock: true[^\n]*\n)", r"\1    __patch: conf/main\n", body)
+
+    # 3) 按键样式注入（各类模式互不重叠；字母键模式要求单字母后紧跟逗号，
+    #    因此不会误伤 click: space / click: Return / click: Shift_L / BackSpace）
+    body = re.sub(r"(?m)^\s*- \{click: space[^\n]*\}", _spacer, body)
+    body = re.sub(r"(?m)^\s*- \{click: Return[^\n]*\}", _runner, body)
+    body = re.sub(r"(?m)^\s*- \{click: '\d'[^\n]*\}", _styler("key"), body)          # 数字行
+    body = re.sub(r"(?m)^\s*- \{click: ','[^\n]*\}", _styler("key"), body)            # ，。键
+    body = re.sub(r"(?m)^\s*- \{click: Trime_transcription[^\n]*\}", _styler("off_key"), body)
+    body = re.sub(r"(?m)^\s*- \{click: Keyboard_flypy_en[^\n]*\}", _styler("off_key"), body)
+    body = re.sub(r"(?m)^\s*- \{click: Keyboard_flypy_zh[^\n]*\}", _styler("off_key"), body)
+    body = re.sub(r"(?m)^\s*- \{click: Keyboard_symbols[^\n]*\}", _styler("off_key"), body)
+    body = re.sub(r"(?m)^\s*- \{click: [a-z],[^\n]*\}", _styler("key"), body)         # 字母键
+    return body
+
+
 def pair_block(light, dark, theme_id):
     """生成明暗配对 + Return1 的补丁片段。"""
     night_is_self = (dark == "default")
@@ -181,7 +250,7 @@ def header(theme_id, desc, files):
 
 
 def main():
-    body = load_patch_body()
+    body = themed_body(load_patch_body())
     written = []
     for theme_id, (desc, files, light, dark) in THEMES.items():
         extra = EXTRA_PATCH.get(theme_id, [])

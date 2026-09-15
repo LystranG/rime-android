@@ -16,5 +16,7 @@ patch:
     Control_L: noop
     Control_R: noop
   schema_list:
-    - schema: double_pinyin_flypy # 小鹤双拼（默认 17 键键盘，见 trime.custom.yaml）
-    - schema: rime_mint          # 薄荷拼音-全拼（自动使用内置 26 键键盘）
+    - schema: double_pinyin_flypy_17 # 小鹤双拼·17键（默认布局，见 trime.custom.yaml）
+    - schema: double_pinyin_flypy_18 # 小鹤双拼·18键（方案别名，共享同一词典/用户词库）
+    - schema: double_pinyin_flypy_24 # 小鹤双拼·24键（方案别名，共享同一词典/用户词库）
+    - schema: rime_mint              # 薄荷拼音-全拼（自动使用内置 26 键键盘）
