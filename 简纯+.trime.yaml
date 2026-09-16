@@ -767,7 +767,11 @@ tool_bar:
       font_size: 14
     action: Keyboard_func
   # 右侧按钮列表（从右向左排列）
-  buttons: [ *hide_button, *menu_button, *clipboard_button, *emoji_button, *redo_button, *undo_button ]   #（原「中英切换」按钮已移除：共键布局上它只切模式不换键盘，切英文请用回车左边的「英」键）
+  # 居中说明：Trime 源码把顶栏按钮写死为「从右往左排列、靠右打包」（无居中选项）。
+  # 这里在列表末尾放一个透明占位键（渲染在最左侧），把按钮组往中间推；
+  # size 第一个数字 = 占位宽度，想更靠中间就调大；窄屏/横屏若按钮换行，就调小。
+  spacer_button: &spacer_button { action: '', size: [30, 40] }   #透明占位键（锚点，供上面 buttons 列表引用）
+  buttons: [ *hide_button, *menu_button, *clipboard_button, *emoji_button, *redo_button, *undo_button, *spacer_button ]
 preset_keyboards:
   sym121:
     name: 中文1
@@ -3863,7 +3867,7 @@ preset_keyboards:
       - { click: Keyboard_func1, width: 12.5, __include: styl/off_func }
       - { click: Homepage, hint: 主页, __include: styl/off_func }
       - { click: Menu, hint: 方案, __include: styl/off_func }
-      - { click: Sync, hint: 同步, __include: styl/off_func }   #（原「设置」按钮会跳出无法返回的设置页，换成 Rime 同步；完整设置请从桌面图标进）
+      - { click: Settings, hint: 设置, __include: styl/off_func }
       - { click: Keyboard_func1, width: 12.5, __include: styl/off_func }
       # 第二行
       - { click: Keyboard_func1, width: 12.5, __include: styl/off_func }
