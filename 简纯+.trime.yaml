@@ -148,7 +148,7 @@ style:
     - 14jian
     - 18jian
     - 17jian
-    - flypy_18jian
+    - double_pinyin_flypy
     - letter
     - letter_18jian
     - letter_14jian
@@ -3745,6 +3745,9 @@ preset_keyboards:
   # （与 forfudan/rime-clover-flypy 官方 xlit 一致；derive 见 double_pinyin_flypy.custom.yaml）
   # 17 键：QW ER TY U I OP / AS DF G H JK L / Shift ZX C V BN M BS（6+6+5）
   # 18 键：同上但 B/N 独立（6+6+6）；hint 为小鹤韵母助记
+  # ⚠️ 18 键的键盘 ID = double_pinyin_flypy（小鹤双拼的方案 ID）：
+  #    Trime 源码 KeyboardWindow.smartMatchKeyboard —— 切到双拼方案时自动套用同名键盘，
+  #    这是唯一不依赖任何设置界面的可靠切换方式
   # ========================================================
   17jian:
     name: 小鹤双拼·17键
@@ -3823,7 +3826,7 @@ preset_keyboards:
         }
       - { click: '', width: 98, height: 2 }
 
-  flypy_18jian:
+  double_pinyin_flypy:
     name: 小鹤双拼·18键
     author: 'forFudan 四叶草布局变体，适配简纯+ 样式'
     ascii_mode: 0
