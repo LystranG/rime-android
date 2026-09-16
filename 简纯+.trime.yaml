@@ -4116,7 +4116,7 @@ preset_keys:
   kb_func: { label: '❖', send: Eisu_toggle, select: func }
   shengdiao: { label: '声调', send: Shift_R+Return }
   # 自定义按键
-  BS: { label: '⌫', repeatable: true, send: BackSpace }
+  BS: { label: '⌫', repeatable: true, slide_delete: true, send: BackSpace } # slide_delete: 按住并向左滑=逐字删除, 向右滑可逐字恢复（需设置里"滑动距离">0）
 #  select_second: { label: '.', send: . }
   split_word: { label: "'分词", send: apostrophe }     #分词功能
   leftyi: { label: 左移, send: Control+j }
