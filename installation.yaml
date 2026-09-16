@@ -19,4 +19,3 @@
 #   * distribution_* / rime_version / install_time 会由 Trime 首次部署时自动补全，
 #     所以这里不写，避免写错版本号。
 installation_id: android
-sync_dir: "sync"
