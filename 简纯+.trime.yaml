@@ -3997,7 +3997,7 @@ preset_keys:
   Return1: { label: 回车, send: Return }
   Hide: { label: '▼', send: BACK }
   Back1: { label: '🔽', send: BACK }
-  BackSpace: { label: 退格, repeatable: true, send: BackSpace }
+  BackSpace: { label: 退格, repeatable: true, slide_delete: true, send: BackSpace } # repeatable: 按住不动自动连删; slide_delete: 按住并向左滑=逐字删除, 向右滑可逐字恢复（需 Trime >= v3.3.12, 且设置里"滑动距离">0）
   space: { label: '', preview: ' ', repeatable: false, functional: false, send: space}
   space1: {label: 空格, repeatable: false, functional: false, send: space}  #用于liquidkeyboard显示一致性
   space2: {label: ⎵, repeatable: false, functional: false, send: space}  #用与数字键盘空格的展现形式
