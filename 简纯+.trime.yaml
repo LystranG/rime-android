@@ -147,6 +147,8 @@ style:
     - ywz62
     - 14jian
     - 18jian
+    - 17jian
+    - flypy_18jian
     - letter
     - letter_18jian
     - letter_14jian
@@ -3423,6 +3425,7 @@ preset_keyboards:
     name: 18键
     author: 'amzxyz'
     ascii_mode: 0
+    ascii_keyboard: letter
     label_transform: uppercase   #键盘字母转化为大写
     lock: true #切换程序时记忆键盘
     horizontal_gap: 2 #按键水平间距
@@ -3728,12 +3731,154 @@ preset_keyboards:
       - { click: Theme_settings, hint: 主题, __include: styl/off_func }
       - { click: Color_switch, hint: 颜色, __include: styl/off_func }
       - { click: Keyboard_func1, width: 12.5, __include: styl/off_func }
-      - { click: Keyboard_func1, width: 12.5, __include: styl/off_func }
+      - { click: kb_17jian, hint: '17键', width: 12.5, __include: styl/off_func }
       - { click: kb_26jian, hint: '26键', __include: styl/off_func }
       - { click: kb_18jian, hint: '18键', __include: styl/off_func }
       - { click: kb_14jian, hint: '14键', __include: styl/off_func }
-      - { click: Keyboard_func1, height: 20, width: 12.5, __include: styl/off_func }
+      - { click: kb_flypy18, hint: '鹤18', height: 20, width: 12.5, __include: styl/off_func }
       - { click: Keyboard_func1, height: 20, width: 100, __include: styl/off_func }
+
+  # ========================================================
+  # ↓↓ 本组合包新增：四叶草 17 键 / 小鹤 18 键（小鹤双拼专用） ↓↓
+  # 分组与 forfudan/rime-clover-flypy 官方完全一致；18 键为 17 键拆 B/N 变体
+  # ========================================================
+  17jian:
+    name: 小鹤双拼·17键
+    author: 'forFudan 四叶草布局，适配简纯+ 样式'
+    ascii_mode: 0            # 进入时默认中文
+    ascii_keyboard: letter   # 应用强制英文（如密码框）时跳到主题英文 26 键
+    lock: true               # 切换 App 时记住本键盘
+    horizontal_gap: 2        # 与主题键盘一致的间距/偏移
+    vertical_gap: 4
+    key_symbol_offset_x: 15
+    key_hint_offset_x: 0
+    key_hint_offset_y: -1
+    key_press_offset_x: 3
+    key_press_offset_y: 3
+    keys:
+      # ---- 第 1 行：简繁 | 数字（上滑符号，下滑中文数字）----
+      - {width: 1}
+      - {click: Trime_transcription, width: 18, key_back_color: off_key_back_color, __include: styl/off_key}
+      - {width: 1}
+      - {click: '1', label: '1', swipe_up: '!',  swipe_down: '一', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '2', label: '2', swipe_up: '@',  swipe_down: '二', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '3', label: '3', swipe_up: '#',  swipe_down: '三', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '4', label: '4', swipe_up: '$',  swipe_down: '四', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '5', label: '5', swipe_up: '%',  swipe_down: '五', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '6', label: '6', swipe_up: '^',  swipe_down: '六', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '7', label: '7', swipe_up: '&',  swipe_down: '七', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '8', label: '8', swipe_up: '*',  swipe_down: '八', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '9', label: '9', swipe_up: '(',  swipe_down: '九', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '0', label: '0', swipe_up: ')',  swipe_down: '〇', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      # ---- 第 2 行：123 | QW ER TY U I OP（上滑标点）----
+      - {width: 1}
+      - {click: Keyboard_number, width: 18, key_back_color: off_key_back_color, __include: styl/off_key}
+      - {width: 1}
+      - {click: q, label: 'QW', swipe_up: '·', width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: e, label: 'ER', swipe_up: '§', width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: t, label: 'TY', swipe_up: '×', width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: u, label: 'U',  swipe_up: '□', width: 10, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: i, label: 'I',  swipe_up: "\\", width: 10, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: o, label: 'OP', swipe_up: '/',  width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      # ---- 第 3 行：符 | AS DF G H JK L（上滑/下滑引号括号）----
+      - {width: 1}
+      - {click: Keyboard_symbols, width: 18, key_back_color: off_key_back_color, __include: styl/off_key}
+      - {width: 1}
+      - {click: a, label: 'AS', swipe_up: '《',           width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: d, label: 'DF', swipe_up: '》',           width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: g, label: 'G',  swipe_up: '“', swipe_down: '‘', width: 10, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: h, label: 'H',  swipe_up: '”', swipe_down: '’', width: 10, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: j, label: 'JK', swipe_up: '「', swipe_down: '『', width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: l, label: 'L',  swipe_up: '」', swipe_down: '』', width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      # ---- 第 4 行：Shift | ZX C V BN M 退格 ----
+      - {width: 1}
+      - {click: Shift_L, width: 18, key_back_color: off_key_back_color}
+      - {width: 1}
+      - {click: z, label: 'ZX', swipe_up: '……', width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: c, label: 'C',  swipe_up: '——', width: 10, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: v, label: 'V',  swipe_up: '：',  width: 10, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: b, label: 'BN', swipe_up: '！',  width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: m, label: 'M',  swipe_up: '？',  width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: BS, swipe_up: Escape, width: 15, key_back_color: off_key_back_color}
+      # ---- 第 5 行：英 | 、； 空格 ，。 回车 ----
+      - {width: 1}
+      - {click: Keyboard_letter_17, width: 18, key_back_color: off_key_back_color, __include: styl/off_key}   # 英（主题英文 26 键）
+      - {width: 1}
+      - {click: '、', label: '、；', swipe_up: '；', width: 12, key_symbol_offset_x: 4, __include: styl/key}
+      - {click: space, swipe_up: Menu, key_symbol_offset_x: 0, width: 40, key_back_color: space_back_color, hilited_key_back_color: hilited_space_back_color}   # 空格 / 上滑方案菜单
+      - {click: '，', label: '，。', swipe_up: '。', width: 12, key_symbol_offset_x: 4, __include: styl/key}
+      - {click: Return, long_click: kb_func, width: 16, key_back_color: enter_back_color, hilited_key_back_color: hilited_enter_back_color, key_text_color: enter_text_color, hilited_key_text_color: enter_text_color, key_symbol_color: enter_symbol_color, hilited_key_symbol_color: enter_symbol_color, key_symbol_offset_x: 0}   # 回车 / 长按功能键盘
+
+  # ==========================================================================
+  # 2. 小鹤 18 键（17 键拆开 B/N；四叶草官方无 18 键，此为同分组变体）
+  #    第 4 行：Shift18 + ZX12 C11 V11 B11 N11 M12 BS12（+ 两侧留白）= 100
+  # ==========================================================================
+  flypy_18jian:
+    name: 小鹤双拼·18键
+    author: 'forFudan 四叶草布局变体，适配简纯+ 样式'
+    ascii_mode: 0
+    ascii_keyboard: letter
+    lock: true
+    horizontal_gap: 2
+    vertical_gap: 4
+    key_symbol_offset_x: 15
+    key_hint_offset_x: 0
+    key_hint_offset_y: -1
+    key_press_offset_x: 3
+    key_press_offset_y: 3
+    keys:
+      # ---- 第 1～3、5 行与 17 键完全相同 ----
+      - {width: 1}
+      - {click: Trime_transcription, width: 18, key_back_color: off_key_back_color, __include: styl/off_key}
+      - {width: 1}
+      - {click: '1', label: '1', swipe_up: '!',  swipe_down: '一', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '2', label: '2', swipe_up: '@',  swipe_down: '二', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '3', label: '3', swipe_up: '#',  swipe_down: '三', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '4', label: '4', swipe_up: '$',  swipe_down: '四', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '5', label: '5', swipe_up: '%',  swipe_down: '五', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '6', label: '6', swipe_up: '^',  swipe_down: '六', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '7', label: '7', swipe_up: '&',  swipe_down: '七', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '8', label: '8', swipe_up: '*',  swipe_down: '八', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '9', label: '9', swipe_up: '(',  swipe_down: '九', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: '0', label: '0', swipe_up: ')',  swipe_down: '〇', width: 8, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {width: 1}
+      - {click: Keyboard_number, width: 18, key_back_color: off_key_back_color, __include: styl/off_key}
+      - {width: 1}
+      - {click: q, label: 'QW', swipe_up: '·', width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: e, label: 'ER', swipe_up: '§', width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: t, label: 'TY', swipe_up: '×', width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: u, label: 'U',  swipe_up: '□', width: 10, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: i, label: 'I',  swipe_up: "\\", width: 10, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: o, label: 'OP', swipe_up: '/',  width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {width: 1}
+      - {click: Keyboard_symbols, width: 18, key_back_color: off_key_back_color, __include: styl/off_key}
+      - {width: 1}
+      - {click: a, label: 'AS', swipe_up: '《',           width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: d, label: 'DF', swipe_up: '》',           width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: g, label: 'G',  swipe_up: '“', swipe_down: '‘', width: 10, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: h, label: 'H',  swipe_up: '”', swipe_down: '’', width: 10, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: j, label: 'JK', swipe_up: '「', swipe_down: '『', width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: l, label: 'L',  swipe_up: '」', swipe_down: '』', width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      # ---- 第 4 行：Shift | ZX C V B N M 退格（B/N 独立）----
+      - {width: 1}
+      - {click: Shift_L, width: 18, key_back_color: off_key_back_color}
+      - {width: 1}
+      - {click: z, label: 'ZX', swipe_up: '……', width: 12, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: c, label: 'C',  swipe_up: '——', width: 11, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: v, label: 'V',  swipe_up: '：',  width: 11, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: b, label: 'B',  swipe_up: '！',  width: 11, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: n, label: 'N',  swipe_up: '？',  width: 11, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: m, label: 'M',  swipe_up: '、',  width: 12, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: BS, swipe_up: Escape, width: 12, key_back_color: off_key_back_color}
+      # ---- 第 5 行：与 17 键相同 ----
+      - {width: 1}
+      - {click: Keyboard_letter_17, width: 18, key_back_color: off_key_back_color, __include: styl/off_key}
+      - {width: 1}
+      - {click: '、', label: '、；', swipe_up: '；', width: 12, key_symbol_offset_x: 4, __include: styl/key}
+      - {click: space, swipe_up: Menu, key_symbol_offset_x: 0, width: 40, key_back_color: space_back_color, hilited_key_back_color: hilited_space_back_color}
+      - {click: '，', label: '，。', swipe_up: '。', width: 12, key_symbol_offset_x: 4, __include: styl/key}
+      - {click: Return, long_click: kb_func, width: 16, key_back_color: enter_back_color, hilited_key_back_color: hilited_enter_back_color, key_text_color: enter_text_color, hilited_key_text_color: enter_text_color, key_symbol_color: enter_symbol_color, hilited_key_symbol_color: enter_symbol_color, key_symbol_offset_x: 0}
+
 
 
 android_keys:
@@ -3918,6 +4063,12 @@ preset_keys:
   # trime键盘
   Mode_switch_space: { toggle: ascii_mode, send: SWITCH_CHARSET, states: [' ', 'ascii'] }
   Keyboard_switch: { label: 键盘, send: Eisu_toggle, select: .next }
+  # ↓↓ 本组合包新增的按键 ↓↓
+  Trime_transcription: { label: 简, send: SWITCH_CHARSET, toggle: transcription, states: [简, 繁] }
+  Keyboard_symbols: { label: '符', send: Eisu_toggle, select: symbols }
+  Keyboard_letter_17: { label: 英, send: Eisu_toggle, select: letter }
+  kb_17jian: { label: 'ic@keyboard', send: Eisu_toggle, select: 17jian }
+  kb_flypy18: { label: 'ic@keyboard', send: Eisu_toggle, select: flypy_18jian }
   Back: { label: 返回, send: Eisu_toggle, select: .last_lock }
   Back14: { label: 返回, send: Eisu_toggle, select: 14jian }
   Back18: { label: 返回, send: Eisu_toggle, select: 18jian }
