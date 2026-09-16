@@ -736,21 +736,6 @@ tool_bar:
     action: liquid_keyboard_clipboard
 
   #🔴中英文切换：
-  mode_button: &mode_button
-    size: [40, 40]
-    background:
-      bg_highlight: 0x00
-      type: rectangle
-      corner_radius: 10
-    foreground:
-      style: "英" #固定显示：点击跳到 26 键英文键盘（回中文用英文键盘回车左边的「中」键）
-      fg_highlight: 0x00
-      fg_normal: text_color  #字色
-      font_size: 30
-      padding: 3
-    action: Keyboard_letter_17
-
-  #🔴重做：
   redo_button: &redo_button
     background:
       bg_highlight: 0x00
@@ -782,7 +767,7 @@ tool_bar:
       font_size: 14
     action: Keyboard_func
   # 右侧按钮列表（从右向左排列）
-  buttons: [ *hide_button, *menu_button, *mode_button, *clipboard_button, *emoji_button, *redo_button, *undo_button ]
+  buttons: [ *hide_button, *menu_button, *clipboard_button, *emoji_button, *redo_button, *undo_button ]   #（原「中英切换」按钮已移除：共键布局上它只切模式不换键盘，切英文请用回车左边的「英」键）
 preset_keyboards:
   sym121:
     name: 中文1
@@ -3878,7 +3863,7 @@ preset_keyboards:
       - { click: Keyboard_func1, width: 12.5, __include: styl/off_func }
       - { click: Homepage, hint: 主页, __include: styl/off_func }
       - { click: Menu, hint: 方案, __include: styl/off_func }
-      - { click: Settings, hint: 设置, __include: styl/off_func }
+      - { click: Sync, hint: 同步, __include: styl/off_func }   #（原「设置」按钮会跳出无法返回的设置页，换成 Rime 同步；完整设置请从桌面图标进）
       - { click: Keyboard_func1, width: 12.5, __include: styl/off_func }
       # 第二行
       - { click: Keyboard_func1, width: 12.5, __include: styl/off_func }
