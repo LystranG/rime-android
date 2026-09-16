@@ -743,13 +743,12 @@ tool_bar:
       type: rectangle
       corner_radius: 10
     foreground:
-      option_styles: ["\uE074", "\uE075"] # 样式也可以为表，将根据 action 的 toggle 决定
+      style: "英" #固定显示：点击跳到 26 键英文键盘（回中文用英文键盘回车左边的「中」键）
       fg_highlight: 0x00
       fg_normal: text_color  #字色
       font_size: 30
       padding: 3
-      #   #微调这个图标默认偏上，往下点
-    action: Mode_switch
+    action: Keyboard_letter_17
 
   #🔴重做：
   redo_button: &redo_button
@@ -3424,6 +3423,7 @@ preset_keyboards:
     name: 小鹤双拼·17键
     author: 'forFudan 四叶草布局，适配简纯+ 样式'
     ascii_mode: 0
+    reset_ascii_mode: true   #显示键盘时重置为中文状态（避免记住英文状态导致切换错乱）
     ascii_keyboard: letter   #应用强制英文时跳英文 26 键
     label_transform: uppercase   #键盘字母转化为大写
     lock: true #切换程序时记忆键盘
@@ -3501,6 +3501,7 @@ preset_keyboards:
     name: 18键
     author: 'forFudan 四叶草布局，适配简纯+ 样式（原万象全拼分组版已由本组合包替换）'
     ascii_mode: 0
+    reset_ascii_mode: true   #显示键盘时重置为中文状态（避免记住英文状态导致切换错乱）
     ascii_keyboard: letter   #应用强制英文时跳英文 26 键
     label_transform: uppercase   #键盘字母转化为大写
     lock: true #切换程序时记忆键盘
@@ -3578,6 +3579,7 @@ preset_keyboards:
     name: 小鹤双拼·18键
     author: 'forFudan 四叶草布局，适配简纯+ 样式（原万象全拼分组版已由本组合包替换）'
     ascii_mode: 0
+    reset_ascii_mode: true   #显示键盘时重置为中文状态（避免记住英文状态导致切换错乱）
     ascii_keyboard: letter   #应用强制英文时跳英文 26 键
     label_transform: uppercase   #键盘字母转化为大写
     lock: true #切换程序时记忆键盘
@@ -3722,6 +3724,7 @@ preset_keyboards:
   letter:
     __include: preset_keyboards/default
     ascii_mode: 1
+    reset_ascii_mode: true   #显示键盘时重置为英文状态（「英」键必得 26键英文）
     lock: false
 
     __patch:
