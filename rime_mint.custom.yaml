@@ -1,20 +1,17 @@
-# rime_mint.custom.yaml —— 薄荷全拼：万象语法模型 + 万象官方 18 键共键映射
+# rime_mint.custom.yaml —— 薄荷全拼：候选数 / 默认中文 / 万象语法模型
 # encoding: utf-8
 #
-# 18 键共键原理（与万象官方 18jian 完全同款分组，见 amzxyz/rime-wanxiang docs/doc/layouts.md）：
-#   简纯+ 主题的 18jian 键盘「一个合并键只发第一个字母」：
-#     W E→w   R T→r   I O→i   S D→s   F G→f   J K→j   X C→x   B N→b
-#   被合并的字母靠下面的 derive 规则补一条派生拼写（e→w、t→r …）。
+# ⚠️ 本方案（全拼）不再带任何共键映射：
+#   主题里的「18键」键盘已替换为四叶草分组（小鹤双拼专用，见简纯+.trime.yaml），
+#   四叶草分组没有全拼所需的独立字母键（w/r/y/p/s/f/k/x/n），全拼不要切 18 键。
+#   之前给全拼配的万象官方 18 键分组 derive（e→w、t→r…8 组）已移除 ——
+#   它会让 26 键的候选被合并音节污染（比如打 w 出 e 类词）。
+#   全拼请使用 26 键。
 #
-# 用 derive（并集）而不是万象原生的 xlit（替换）的原因：
-#   xlit 会把编码整体替换掉 —— 开了 18 键后 26 键就废了，切布局要改配置重新部署；
-#   derive 只「新增」拼写、保留原拼写 → 26 键和 18 键同时可用，
-#   在功能键盘（回车长按）里直接切换，不用重新部署。代价是与万象官方行为略有差异
-#   （合并键上两类候选并存，例如按 S D 键 = s 和 d 的词都出，这正是共键的预期）。
-#
-# ⚠️ 万象 grammar 必须内联，不能写 __include: wanxiang:/settings：
+# 万象 grammar 必须内联，不能写 __include: wanxiang:/settings：
 #   同一补丁文件里 __include 与 "speller/algebra/+" 并存会把方案编译坏
 #   （librime 1.16 实测：部署成功但任何输入都没有候选）。
+#   本文件已无 algebra 追加，但保持内联写法以绝后患。
 patch:
   # 强制默认中文
   "switches/@0":
@@ -24,7 +21,7 @@ patch:
   # 候选个数（薄荷把 menu 冗余写进了每个方案文件，必须在这里改才生效）
   "menu/page_size": 9
 
-  # ===== 万象语法模型设置（wanxiang.yaml 的内容内联，供语法模型生效）=====
+  # ===== 万象语法模型设置（wanxiang.yaml 的内容内联）=====
   grammar:
     language: wanxiang-lts-zh-hans
     collocation_max_length: 5
@@ -32,15 +29,3 @@ patch:
   "translator/contextual_suggestions": true
   "translator/max_homophones": 7
   "translator/max_homographs": 7
-
-  # ===== 万象官方 18 键共键映射（derive 并集版，8 组）=====
-  # 想恢复纯 26 键：把 "speller/algebra/+" 整段删掉重新部署。
-  "speller/algebra/+":
-    - "derive/e/w/"   # W E 键 → w   （e 类音节派生到 w）
-    - "derive/t/r/"   # R T 键 → r
-    - "derive/o/i/"   # I O 键 → i
-    - "derive/d/s/"   # S D 键 → s
-    - "derive/g/f/"   # F G 键 → f
-    - "derive/k/j/"   # J K 键 → j
-    - "derive/c/x/"   # X C 键 → x
-    - "derive/n/b/"   # B N 键 → b

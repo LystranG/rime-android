@@ -33,20 +33,17 @@
 
 17/18 键布局复刻四叶草官方「宇宙·十七键」（[forfudan/rime-clover-flypy](https://github.com/forfudan/rime-clover-flypy)，theme/cosmic17key）：左侧 18 宽功能键（简/123/符/Shift/英）+ 两侧留白，数字行下滑中文数字，字母键上滑标点；合并分组与官方方案完全一致（官方 `xlit/…/qqeettuiooaaddghjjlzzcvbbm/`）。四叶草官方只有 14/17 键，没有 18 键——「鹤18」是 17 键拆开 B/N 的同分组变体。
 
-**切换方式（自动，最可靠）**：小鹤 18 键的键盘 ID = `double_pinyin_flypy`（与小鹤双拼方案同名）——
-Trime 源码 `KeyboardWindow.smartMatchKeyboard` 的硬逻辑：**切到双拼方案时自动套用同名键盘**，
-不依赖任何设置界面。切到薄荷全拼（rime_mint）则自动回到 26 键。
-
-**切换方式（手动）**：17 键（`17jian`）和 18 键也都追加进了主题 `style/keyboards` 列表，
-在键盘列表里可以手动切换；功能键盘（长按回车）保持主题原样，不加按钮。
+**切换方式**：主题里的「18键」**已经被直接替换为四叶草布局**（键盘 ID/名字都没变）——
+你原来在设置里怎么切 18 键，现在切出来的就是四叶草 17/18 键，无需任何新习惯。
+17 键（`小鹤双拼·17键`）也在同一个键盘列表里。功能键盘（长按回车）保持主题原样。
 
 | 键盘 | 配合的方案 | 原理 |
 | --- | --- | --- |
 | 26 键（主题自带） | 全拼 / 双拼都能用 | 标准键盘 |
-| 18 键（主题自带，hint「18键」） | **薄荷全拼 rime_mint** | 万象官方同款 8 组合并（W E→w、R T→r、I O→i、S D→s、F G→f、J K→j、X C→x、B N→b），映射在 `rime_mint.custom.yaml` |
-| 17 键（本包，四叶草官方布局） | **小鹤双拼 double_pinyin_flypy** | 四叶草 9 组合并（QW/ER/TY/OP/AS/DF/JK/ZX/BN），映射在 `double_pinyin_flypy.custom.yaml` |
-| 小鹤 18 键（本包，键盘 ID = `double_pinyin_flypy`） | **小鹤双拼 double_pinyin_flypy** | 同分组拆开 B/N；`你好 = BN IO H C` 四键直出；**切到双拼方案自动套用** |
+| 18 键（**已替换为四叶草布局**，名字仍叫「18键」） | **小鹤双拼 double_pinyin_flypy** | 四叶草分组拆开 B/N；`你好 = BN IO H C` 四键直出 |
+| 17 键（本包新增「小鹤双拼·17键」） | **小鹤双拼 double_pinyin_flypy** | 四叶草 9 组合并（QW/ER/TY/OP/AS/DF/JK/ZX/BN），映射在 `double_pinyin_flypy.custom.yaml` |
 | 14 键（主题自带） | 本包未启用 | 没加对应映射，忽略 |
+| 26 键 + 全拼 | 薄荷全拼 rime_mint | 全拼没有共键映射（已移除，避免污染 26 键候选）；**全拼请用 26 键** |
 
 > ⚠️ **万象官方 18 键不能用于双拼**：它的分组是按全拼设计的，小鹤里当韵母的
 > `c/d/g/k/t/e/o/n` 都被合并掉、没有独立键（例：好 = 小鹤码 `hc`，`c` 在万象 18 键上
