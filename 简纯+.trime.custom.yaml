@@ -12,6 +12,9 @@
 #     映射见 rime_mint.custom.yaml；双拼方案没有这组映射，18 键在双拼下会缺字母键）
 #   · 17 键（本文件新增）→ 配合【小鹤双拼 double_pinyin_flypy】（clover 9 组合并，
 #     映射见 double_pinyin_flypy.custom.yaml；全拼下会缺字母键）
+#   · 小鹤 18 键（本文件新增 flypy_18jian）→ 配合【小鹤双拼】：四叶草分组拆开 B/N，
+#     与 17 键共用同一套 derive；⚠️ 不是主题自带的万象 18 键（那是全拼分组，
+#     小鹤里当韵母的 c/d/g/k/t/e/o/n 没有独立键，双拼打不全，如好=hc 的 c）
 #   · 14 键（主题自带）→ 本组合包没有加对应映射，不可用，忽略即可
 #
 # 样式说明：按键颜色直接引用主题配色别名（main_back_color → 当前配色的圆角 key.png），
@@ -79,6 +82,71 @@ patch:
       - {click: '', width: 98, height: 2}   # 底部留白（与主题 18 键键盘一致）
 
   # ==========================================================================
+  # 1b. 小鹤 18 键共键键盘（四叶草分组拆开 B/N，共 8 组合并）
+  #     与万象官方 18 键（全拼分组）不同：本键盘是给【小鹤双拼】用的 18 键 ——
+  #     小鹤里当韵母的 c/d/g/k/t/e/o/n 都有独立键（万象分组把它们全合了，双拼打不全）。
+  #     例：你好 = BN IO H C 四键（万象 18 键上做不到，C 被并入 X C 且发 x）。
+  #     与 17 键共用同一套 derive（double_pinyin_flypy.custom.yaml 的 9 组并集）。
+  # ==========================================================================
+  "preset_keyboards/flypy_18jian":
+    name: 小鹤双拼·18键
+    author: 'clover/forFudan 布局，适配简纯+ 样式'
+    ascii_mode: 0
+    ascii_keyboard: letter
+    lock: true
+    horizontal_gap: 2
+    vertical_gap: 4
+    key_symbol_offset_x: 15
+    key_hint_offset_x: 0
+    key_hint_offset_y: -1
+    key_press_offset_x: 3
+    key_press_offset_y: 3
+    keys:
+      # ---- 数字行（与主题 18 键键盘相同的矮数字行样式）----
+      - {click: num1, __include: conf/num_line18}
+      - {click: num2, __include: conf/num_line18}
+      - {click: num3, __include: conf/num_line18}
+      - {click: num4, __include: conf/num_line18}
+      - {click: num5, __include: conf/num_line18}
+      - {click: num6, __include: conf/num_line18}
+      - {click: num7, __include: conf/num_line18}
+      - {click: num8, __include: conf/num_line18}
+      - {click: num9, __include: conf/num_line18}
+      - {click: num0, __include: conf/num_line18}
+      # ---- 第 1 行：QW ER TY U I OP（与 17 键相同）----
+      - {click: 18keyqw, long_click: '!',  width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keyer, long_click: '@',  width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keyty, long_click: '#',  width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keyu,  long_click: '$',  width: 16, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keyi,  long_click: '%',  width: 16, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keyop, long_click: '^',  width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      # ---- 第 2 行：AS DF G H JK L（与 17 键相同）----
+      - {click: 18keyas, long_click: '&',  width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keydf, long_click: '*',  width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keyg,  long_click: '(',  width: 16, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keyh,  long_click: ')',  width: 16, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keyjk, long_click: '「', width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keyl,  long_click: '」', width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      # ---- 第 3 行：Shift ZX C V B N M 退格（B/N 拆开，8 键）----
+      - {click: Shift_L, composing: split_word, width: 13, key_back_color: off_key_back_color}
+      - {click: 18keyzx, long_click: '~',   width: 13, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keyc,  long_click: cut,   width: 12, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keyv,  long_click: paste, width: 12, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keyb,  long_click: ':',   width: 12, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keyn,  long_click: '"',   width: 12, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 18keym,  long_click: "'",   width: 13, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: BS, width: 13, key_back_color: off_key_back_color, swipe_up: Escape}
+      # ---- 第 4 行：功能行（与 17 键一致）----
+      - {click: Keyboard_number, width: 11, key_back_color: off_key_back_color, __include: styl/off_key}   # 123 数字键盘
+      - {click: Keyboard_symbols, long_click: Color_switch, width: 11, key_back_color: off_key_back_color, __include: styl/off_key}   # 符号 / 长按换配色
+      - {click: '，', label: '，', long_click: '、', width: 10, key_symbol_offset_x: 4, __include: styl/key}
+      - {click: space, swipe_up: Menu, key_symbol_offset_x: 0, width: 32, key_back_color: space_back_color, hilited_key_back_color: hilited_space_back_color}   # 空格 / 上滑方案菜单
+      - {click: '。', label: '。', long_click: '？', width: 10, key_symbol_offset_x: 4, __include: styl/key}
+      - {click: Keyboard_letter_flypy18, width: 11, key_back_color: off_key_back_color, __include: styl/off_key}   # 英（英文 26 键）
+      - {click: Return, long_click: kb_func, width: 15, key_back_color: enter_back_color, hilited_key_back_color: hilited_enter_back_color, key_text_color: enter_text_color, hilited_key_text_color: enter_text_color, key_symbol_color: enter_symbol_color, hilited_key_symbol_color: enter_symbol_color, key_symbol_offset_x: 0}   # 回车 / 长按功能键盘
+      - {click: '', width: 98, height: 2}   # 底部留白
+
+  # ==========================================================================
   # 2. 17 键键盘用到的预设按键
   # ==========================================================================
   # 合并字母键：一个键只发第一个字母（四叶草做法），被合并字母靠方案 derive 补齐
@@ -102,18 +170,46 @@ patch:
   # 键盘跳转键
   "preset_keys/Keyboard_letter_17jian": { label: 英, send: Eisu_toggle, select: letter }   # 中 → 英（主题英文 26 键）
   "preset_keys/kb_17jian": { label: 'ic@keyboard', send: Eisu_toggle, select: 17jian }     # 功能键盘里的 17 键按钮（图标 + hint）
+  # 小鹤 18 键的合并键与跳转键（B/N 独立，其余分组与 17 键相同）
+  "preset_keys/18keyqw": { label: "Q W", send: "q" }
+  "preset_keys/18keyer": { label: "E R", send: "e" }
+  "preset_keys/18keyty": { label: "T Y", send: "t" }
+  "preset_keys/18keyu":  { label: " U ", send: "u" }
+  "preset_keys/18keyi":  { label: " I ", send: "i" }
+  "preset_keys/18keyop": { label: "O P", send: "o" }
+  "preset_keys/18keyas": { label: "A S", send: "a" }
+  "preset_keys/18keydf": { label: "D F", send: "d" }
+  "preset_keys/18keyg":  { label: " G ", send: "g" }
+  "preset_keys/18keyh":  { label: " H ", send: "h" }
+  "preset_keys/18keyjk": { label: "J K", send: "j" }
+  "preset_keys/18keyl":  { label: " L ", send: "l" }
+  "preset_keys/18keyzx": { label: "Z X", send: "z" }
+  "preset_keys/18keyc":  { label: " C ", send: "c" }
+  "preset_keys/18keyv":  { label: " V ", send: "v" }
+  "preset_keys/18keyb":  { label: " B ", send: "b" }
+  "preset_keys/18keyn":  { label: " N ", send: "n" }
+  "preset_keys/18keym":  { label: " M ", send: "m" }
+  "preset_keys/Keyboard_letter_flypy18": { label: 英, send: Eisu_toggle, select: letter }
+  "preset_keys/kb_flypy18": { label: 'ic@keyboard', send: Eisu_toggle, select: flypy_18jian }   # 功能键盘里的“鹤18”按钮
   # 主题没有单数的 Keyboard_symbols（只有 18/14 前缀版），这里补一个通用符号键
   "preset_keys/Keyboard_symbols": { label: '۞', send: Eisu_toggle, select: symbols }
 
   # ==========================================================================
-  # 3. 功能键盘挂 17 键按钮
+  # 3. 功能键盘挂 17 键 / 小鹤 18 键按钮
   #    主题 func 键盘第 3 行是：占位 | 26键 | 18键 | 14键 | 占位
-  #    把行尾的占位键（Keyboard_func1 空白键）替换成 17 键按钮；
-  #    万象官方以后若加了 17 键，删掉本段即可。
+  #    两个占位键（无论 0/1 基索引都落在 Keyboard_func1 空白键上）分别替换成：
+  #      @10 → 17 键（小鹤双拼）      @14 → 小鹤 18 键
+  #    第 3 行变成：17键 | 26键 | 18键 | 14键 | 鹤18，宽度 12.5+25+25+25+12.5 = 100
+  #    万象官方以后若加了 17 键，删掉对应段即可。
   # ==========================================================================
   "preset_keyboards/func/keys/@10/":
     click: kb_17jian
     hint: '17键'
+    width: 12.5
+    __include: styl/off_func
+  "preset_keyboards/func/keys/@14/":
+    click: kb_flypy18
+    hint: '鹤18'
     width: 12.5
     __include: styl/off_func
 
