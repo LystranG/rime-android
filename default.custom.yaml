@@ -1,22 +1,28 @@
 # default.custom.yaml —— 全局补丁（Android / 同文输入法 Trime）
 # encoding: utf-8
 #
-# 注意（薄荷/oh-my-rime 官方说明）：
-#   本文件只放「全局」配置。候选个数(menu/page_size)、快捷键(key_binder) 请不要写在这里，
-#   而要写在对应方案的 <方案>.custom.yaml 里 —— 因为薄荷为了兼容 Rimetool，
-#   把 menu / key_binder 冗余写进了每个方案文件，方案文件的优先级高于 default.yaml。
+# 组合包说明：本目录是「oh-my-rime（薄荷）官方方案 + 万象官方简纯+ Trime 主题」的组合。
+#   * 方案/词库/lua 全部来自手机上直接拉取的 oh-my-rime 仓库（官方维护）；
+#   * 键盘样式/布局来自万象的 简纯+ 主题（官方维护）；
+#   * 本目录只放「少量补丁」，把两者粘起来，并把 17/18 键共键映射挂上薄荷方案。
 #
-# Trime 的「方案」设置页本质上也是在维护这里的 schema_list。
+# ⚠️ 为什么必须覆盖 oh-my-rime 的 default.yaml（用本文件 patch）：
+#   1. oh-my-rime 的 schema_list 里有 7+ 个方案（t9 在 Trime 上不可用、五笔/地球拼音用不到），
+#      全部编进去首次部署会慢且多出错面；
+#   2. 外部同步模式下，Trime 界面里改的方案列表会被外部文件覆盖 —— 要改就在这里改。
+#
+# 词库同步（重要）：double_pinyin_flypy 和 rime_mint 的 translator/dictionary 都是 rime_mint，
+#   与 macOS 端 ~/Library/Rime 的两个方案同词典名 → 三端共用同一个 rime_mint.userdb，
+#   各自执行「同步用户数据」即可正确合并词频（详见本目录 README 的同步一节）。
 patch:
-  # 物理键盘/外接键盘的中英切换行为（Android 软键盘上基本用不到，保留与桌面端一致）
+  # 物理键盘/外接键盘的中英切换行为（与 macOS 端保持一致：全部 noop，避免误切）
   "ascii_composer/switch_key":
     Caps_Lock: noop
     Shift_L: noop
     Shift_R: noop
     Control_L: noop
     Control_R: noop
+  # 只保留两个主力方案（第一个是默认方案：小鹤双拼）
   schema_list:
-    - schema: double_pinyin_flypy_17 # 小鹤双拼·17键（默认布局，见 trime.custom.yaml）
-    - schema: double_pinyin_flypy_18 # 小鹤双拼·18键（方案别名，共享同一词典/用户词库）
-    - schema: double_pinyin_flypy_24 # 小鹤双拼·24键（方案别名，共享同一词典/用户词库）
-    - schema: rime_mint              # 薄荷拼音-全拼（自动使用内置 26 键键盘）
+    - schema: double_pinyin_flypy # 小鹤双拼（17 键共键见 简纯+.trime.custom.yaml）
+    - schema: rime_mint           # 薄荷全拼（18 键共键，万象官方同款分组）

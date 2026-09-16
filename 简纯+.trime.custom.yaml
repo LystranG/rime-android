@@ -1,0 +1,123 @@
+# 简纯+.trime.custom.yaml —— 给万象官方「简纯+」主题补上 17 键共键键盘（小鹤双拼用）
+# encoding: utf-8
+#
+# 背景：简纯+ 是 amzxyz/rime-wanxiang 官方维护的 Trime 主题（样式/布局/切换键都调好了），
+#   自带 26 键 / 18 键 / 14 键 + 对应英文键盘 + 功能键盘（回车长按呼出，里面切换布局）。
+#   本补丁只做增量：往里面加一个「17 键共键键盘」（四叶草分组，配合小鹤双拼方案使用），
+#   并在功能键盘的 26/18/14 按钮旁边挂上 17 键按钮。
+#
+# 布局与方案的配对（重要）：
+#   · 26 键（主题自带 default）→ 全拼 / 双拼都能用（derive 是并集，26 键永远不废）
+#   · 18 键（主题自带 18jian）→ 配合【薄荷全拼 rime_mint】（万象官方同款 8 组合并，
+#     映射见 rime_mint.custom.yaml；双拼方案没有这组映射，18 键在双拼下会缺字母键）
+#   · 17 键（本文件新增）→ 配合【小鹤双拼 double_pinyin_flypy】（clover 9 组合并，
+#     映射见 double_pinyin_flypy.custom.yaml；全拼下会缺字母键）
+#   · 14 键（主题自带）→ 本组合包没有加对应映射，不可用，忽略即可
+#
+# 样式说明：按键颜色直接引用主题配色别名（main_back_color → 当前配色的圆角 key.png），
+#   与主题自带 18 键键盘的写法一致，所以深浅色、谷歌白/黑等配色切换自动跟随。
+patch:
+  # ==========================================================================
+  # 1. 17 键共键键盘（四叶草分组：q←w e←r t←y o←p a←s d←f j←k z←x b←n）
+  #    3 行字母 6+6+5（含 Shift/退格），行宽和均为 100
+  # ==========================================================================
+  "preset_keyboards/17jian":
+    name: 17键
+    author: 'clover/forFudan 布局，适配简纯+ 样式'
+    ascii_mode: 0            # 进入时默认中文
+    ascii_keyboard: letter   # 应用强制英文（如密码框）时跳到主题英文 26 键
+    lock: true               # 切换 App 时记住本键盘
+    horizontal_gap: 2        # 与主题 18 键键盘一致的间距/偏移
+    vertical_gap: 4
+    key_symbol_offset_x: 15
+    key_hint_offset_x: 0
+    key_hint_offset_y: -1
+    key_press_offset_x: 3
+    key_press_offset_y: 3
+    keys:
+      # ---- 数字行（与主题 18 键键盘相同的矮数字行样式）----
+      - {click: num1, __include: conf/num_line18}
+      - {click: num2, __include: conf/num_line18}
+      - {click: num3, __include: conf/num_line18}
+      - {click: num4, __include: conf/num_line18}
+      - {click: num5, __include: conf/num_line18}
+      - {click: num6, __include: conf/num_line18}
+      - {click: num7, __include: conf/num_line18}
+      - {click: num8, __include: conf/num_line18}
+      - {click: num9, __include: conf/num_line18}
+      - {click: num0, __include: conf/num_line18}
+      # ---- 第 1 行：QW ER TY U I OP ----
+      - {click: 17keyqw, long_click: '!',  width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keyer, long_click: '@',  width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keyty, long_click: '#',  width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keyu,  long_click: '$',  width: 16, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keyi,  long_click: '%',  width: 16, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keyop, long_click: '^',  width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      # ---- 第 2 行：AS DF G H JK L ----
+      - {click: 17keyas, long_click: '&',  width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keydf, long_click: '*',  width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keyg,  long_click: '(',  width: 16, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keyh,  long_click: ')',  width: 16, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keyjk, long_click: '「', width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keyl,  long_click: '」', width: 17, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      # ---- 第 3 行：Shift ZX C V BN M 退格 ----
+      - {click: Shift_L, composing: split_word, width: 13, key_back_color: off_key_back_color}
+      - {click: 17keyzx, long_click: '~',   width: 18, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keyc,  long_click: cut,   width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keyv,  long_click: paste, width: 15, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keybn, long_click: ':',   width: 18, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: 17keym,  long_click: '"',   width: 13, key_back_color: main_back_color, hilited_key_back_color: hilited_main_back_color}
+      - {click: BS, width: 8, key_back_color: off_key_back_color, swipe_up: Escape}
+      # ---- 第 4 行：功能行（布局/键盘跳转全部走主题既有预设键）----
+      - {click: Keyboard_number, width: 11, key_back_color: off_key_back_color, __include: styl/off_key}   # 123 数字键盘
+      - {click: Keyboard_symbols, long_click: Color_switch, width: 11, key_back_color: off_key_back_color, __include: styl/off_key}   # 符号 / 长按换配色
+      - {click: '，', label: '，', long_click: '、', width: 10, key_symbol_offset_x: 4, __include: styl/key}
+      - {click: space, swipe_up: Menu, key_symbol_offset_x: 0, width: 32, key_back_color: space_back_color, hilited_key_back_color: hilited_space_back_color}   # 空格 / 上滑方案菜单
+      - {click: '。', label: '。', long_click: '？', width: 10, key_symbol_offset_x: 4, __include: styl/key}
+      - {click: Keyboard_letter_17jian, width: 11, key_back_color: off_key_back_color, __include: styl/off_key}   # 英（英文 26 键）
+      - {click: Return, long_click: kb_func, width: 15, key_back_color: enter_back_color, hilited_key_back_color: hilited_enter_back_color, key_text_color: enter_text_color, hilited_key_text_color: enter_text_color, key_symbol_color: enter_symbol_color, hilited_key_symbol_color: enter_symbol_color, key_symbol_offset_x: 0}   # 回车 / 长按功能键盘
+      - {click: '', width: 98, height: 2}   # 底部留白（与主题 18 键键盘一致）
+
+  # ==========================================================================
+  # 2. 17 键键盘用到的预设按键
+  # ==========================================================================
+  # 合并字母键：一个键只发第一个字母（四叶草做法），被合并字母靠方案 derive 补齐
+  "preset_keys/17keyqw": { label: "Q W", send: "q" }
+  "preset_keys/17keyer": { label: "E R", send: "e" }
+  "preset_keys/17keyty": { label: "T Y", send: "t" }
+  "preset_keys/17keyu":  { label: " U ", send: "u" }
+  "preset_keys/17keyi":  { label: " I ", send: "i" }
+  "preset_keys/17keyop": { label: "O P", send: "o" }
+  "preset_keys/17keyas": { label: "A S", send: "a" }
+  "preset_keys/17keydf": { label: "D F", send: "d" }
+  "preset_keys/17keyg":  { label: " G ", send: "g" }
+  "preset_keys/17keyh":  { label: " H ", send: "h" }
+  "preset_keys/17keyjk": { label: "J K", send: "j" }
+  "preset_keys/17keyl":  { label: " L ", send: "l" }
+  "preset_keys/17keyzx": { label: "Z X", send: "z" }
+  "preset_keys/17keyc":  { label: " C ", send: "c" }
+  "preset_keys/17keyv":  { label: " V ", send: "v" }
+  "preset_keys/17keybn": { label: "B N", send: "b" }
+  "preset_keys/17keym":  { label: " M ", send: "m" }
+  # 键盘跳转键
+  "preset_keys/Keyboard_letter_17jian": { label: 英, send: Eisu_toggle, select: letter }   # 中 → 英（主题英文 26 键）
+  "preset_keys/kb_17jian": { label: 'ic@keyboard', send: Eisu_toggle, select: 17jian }     # 功能键盘里的 17 键按钮（图标 + hint）
+  # 主题没有单数的 Keyboard_symbols（只有 18/14 前缀版），这里补一个通用符号键
+  "preset_keys/Keyboard_symbols": { label: '۞', send: Eisu_toggle, select: symbols }
+
+  # ==========================================================================
+  # 3. 功能键盘挂 17 键按钮
+  #    主题 func 键盘第 3 行是：占位 | 26键 | 18键 | 14键 | 占位
+  #    把行尾的占位键（Keyboard_func1 空白键）替换成 17 键按钮；
+  #    万象官方以后若加了 17 键，删掉本段即可。
+  # ==========================================================================
+  "preset_keyboards/func/keys/@10/":
+    click: kb_17jian
+    hint: '17键'
+    width: 12.5
+    __include: styl/off_func
+
+  # ==========================================================================
+  # 4. 给主题自带的 18 键键盘补 ascii_keyboard（应用强制英文时自动跳英文 26 键）
+  # ==========================================================================
+  "preset_keyboards/18jian/ascii_keyboard": letter

@@ -1,5 +1,10 @@
-# double_pinyin_flypy.custom.yaml —— 小鹤双拼-薄荷定制：Android / 同文输入法(Trime) 补丁
+# double_pinyin_flypy.custom.yaml —— 小鹤双拼：万象语法模型 + 17 键共键映射（clover 分组）
 # encoding: utf-8
+#
+# 组合包说明：小鹤双拼方案本体来自 oh-my-rime（手机上拉取），本文件只做三件事：
+#   1. 候选数 / 默认中文；2. 内联万象语法模型设置；3. 追加 17 键共键 derive 规则。
+#   17 键键盘布局在 简纯+.trime.custom.yaml 里（配合万象官方简纯+主题的样式）。
+#   词典是 rime_mint（与 Mac、与薄荷全拼同名）→ 三端词库学习同步合并。
 patch:
   # 强制默认中文，并把 ascii_mode 的 reset 设为 0
   "switches/@0":

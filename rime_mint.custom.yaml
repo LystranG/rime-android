@@ -1,12 +1,46 @@
-# rime_mint.custom.yaml —— 薄荷拼音-全拼：Android / 同文输入法(Trime) 补丁
+# rime_mint.custom.yaml —— 薄荷全拼：万象语法模型 + 万象官方 18 键共键映射
 # encoding: utf-8
 #
-# 全拼方案不使用共键（17/18/24 键是给小鹤双拼用的），
-# Trime 会按 speller/alphabet（26 个字母）自动给它套用内置的 qwerty 26 键键盘。
+# 18 键共键原理（与万象官方 18jian 完全同款分组，见 amzxyz/rime-wanxiang docs/doc/layouts.md）：
+#   简纯+ 主题的 18jian 键盘「一个合并键只发第一个字母」：
+#     W E→w   R T→r   I O→i   S D→s   F G→f   J K→j   X C→x   B N→b
+#   被合并的字母靠下面的 derive 规则补一条派生拼写（e→w、t→r …）。
+#
+# 用 derive（并集）而不是万象原生的 xlit（替换）的原因：
+#   xlit 会把编码整体替换掉 —— 开了 18 键后 26 键就废了，切布局要改配置重新部署；
+#   derive 只「新增」拼写、保留原拼写 → 26 键和 18 键同时可用，
+#   在功能键盘（回车长按）里直接切换，不用重新部署。代价是与万象官方行为略有差异
+#   （合并键上两类候选并存，例如按 S D 键 = s 和 d 的词都出，这正是共键的预期）。
+#
+# ⚠️ 万象 grammar 必须内联，不能写 __include: wanxiang:/settings：
+#   同一补丁文件里 __include 与 "speller/algebra/+" 并存会把方案编译坏
+#   （librime 1.16 实测：部署成功但任何输入都没有候选）。
 patch:
-  # 强制默认中文，并把 ascii_mode 的 reset 设为 0
+  # 强制默认中文
   "switches/@0":
     name: ascii_mode
     reset: 0
     states: ["中文", "西文"]
-  __include: wanxiang:/settings
+  # 候选个数（薄荷把 menu 冗余写进了每个方案文件，必须在这里改才生效）
+  "menu/page_size": 9
+
+  # ===== 万象语法模型设置（wanxiang.yaml 的内容内联，供语法模型生效）=====
+  grammar:
+    language: wanxiang-lts-zh-hans
+    collocation_max_length: 5
+    collocation_min_length: 2
+  "translator/contextual_suggestions": true
+  "translator/max_homophones": 7
+  "translator/max_homographs": 7
+
+  # ===== 万象官方 18 键共键映射（derive 并集版，8 组）=====
+  # 想恢复纯 26 键：把 "speller/algebra/+" 整段删掉重新部署。
+  "speller/algebra/+":
+    - "derive/e/w/"   # W E 键 → w   （e 类音节派生到 w）
+    - "derive/t/r/"   # R T 键 → r
+    - "derive/o/i/"   # I O 键 → i
+    - "derive/d/s/"   # S D 键 → s
+    - "derive/g/f/"   # F G 键 → f
+    - "derive/k/j/"   # J K 键 → j
+    - "derive/c/x/"   # X C 键 → x
+    - "derive/n/b/"   # B N 键 → b
